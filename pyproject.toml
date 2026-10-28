@@ -1,0 +1,25 @@
+[project]
+name = "qarch"
+version = "0.1.0"
+description = "Address-table / Pauli-frame compiler pass and benchmarks for 'Optimizations to Quantum Computing Architectures Utilizing Classical Structures'"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "qiskit>=2.0",
+    "qiskit-aer>=0.15",
+    "stim>=1.14",
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qarch"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,305 @@
+{
+ "convention": "Row {in: P, sign: s, out: Q} means G P G^dagger = s Q. Letters are in gate-argument order; CNOT and CZ are (control, target). Move a flag P from before G to after G by replacing it with Q. The sign is a global phase and can be dropped by the frame.",
+ "gates": {
+  "H": {
+   "qubits": 1,
+   "rows": [
+    {
+     "in": "X",
+     "sign": 1,
+     "out": "Z"
+    },
+    {
+     "in": "Y",
+     "sign": -1,
+     "out": "Y"
+    },
+    {
+     "in": "Z",
+     "sign": 1,
+     "out": "X"
+    }
+   ]
+  },
+  "S": {
+   "qubits": 1,
+   "rows": [
+    {
+     "in": "X",
+     "sign": 1,
+     "out": "Y"
+    },
+    {
+     "in": "Y",
+     "sign": -1,
+     "out": "X"
+    },
+    {
+     "in": "Z",
+     "sign": 1,
+     "out": "Z"
+    }
+   ]
+  },
+  "Sdg": {
+   "qubits": 1,
+   "rows": [
+    {
+     "in": "X",
+     "sign": -1,
+     "out": "Y"
+    },
+    {
+     "in": "Y",
+     "sign": 1,
+     "out": "X"
+    },
+    {
+     "in": "Z",
+     "sign": 1,
+     "out": "Z"
+    }
+   ]
+  },
+  "CNOT": {
+   "qubits": 2,
+   "rows": [
+    {
+     "in": "IX",
+     "sign": 1,
+     "out": "IX"
+    },
+    {
+     "in": "IY",
+     "sign": 1,
+     "out": "ZY"
+    },
+    {
+     "in": "IZ",
+     "sign": 1,
+     "out": "ZZ"
+    },
+    {
+     "in": "XI",
+     "sign": 1,
+     "out": "XX"
+    },
+    {
+     "in": "XX",
+     "sign": 1,
+     "out": "XI"
+    },
+    {
+     "in": "XY",
+     "sign": 1,
+     "out": "YZ"
+    },
+    {
+     "in": "XZ",
+     "sign": -1,
+     "out": "YY"
+    },
+    {
+     "in": "YI",
+     "sign": 1,
+     "out": "YX"
+    },
+    {
+     "in": "YX",
+     "sign": 1,
+     "out": "YI"
+    },
+    {
+     "in": "YY",
+     "sign": -1,
+     "out": "XZ"
+    },
+    {
+     "in": "YZ",
+     "sign": 1,
+     "out": "XY"
+    },
+    {
+     "in": "ZI",
+     "sign": 1,
+     "out": "ZI"
+    },
+    {
+     "in": "ZX",
+     "sign": 1,
+     "out": "ZX"
+    },
+    {
+     "in": "ZY",
+     "sign": 1,
+     "out": "IY"
+    },
+    {
+     "in": "ZZ",
+     "sign": 1,
+     "out": "IZ"
+    }
+   ]
+  },
+  "CZ": {
+   "qubits": 2,
+   "rows": [
+    {
+     "in": "IX",
+     "sign": 1,
+     "out": "ZX"
+    },
+    {
+     "in": "IY",
+     "sign": 1,
+     "out": "ZY"
+    },
+    {
+     "in": "IZ",
+     "sign": 1,
+     "out": "IZ"
+    },
+    {
+     "in": "XI",
+     "sign": 1,
+     "out": "XZ"
+    },
+    {
+     "in": "XX",
+     "sign": 1,
+     "out": "YY"
+    },
+    {
+     "in": "XY",
+     "sign": -1,
+     "out": "YX"
+    },
+    {
+     "in": "XZ",
+     "sign": 1,
+     "out": "XI"
+    },
+    {
+     "in": "YI",
+     "sign": 1,
+     "out": "YZ"
+    },
+    {
+     "in": "YX",
+     "sign": -1,
+     "out": "XY"
+    },
+    {
+     "in": "YY",
+     "sign": 1,
+     "out": "XX"
+    },
+    {
+     "in": "YZ",
+     "sign": 1,
+     "out": "YI"
+    },
+    {
+     "in": "ZI",
+     "sign": 1,
+     "out": "ZI"
+    },
+    {
+     "in": "ZX",
+     "sign": 1,
+     "out": "IX"
+    },
+    {
+     "in": "ZY",
+     "sign": 1,
+     "out": "IY"
+    },
+    {
+     "in": "ZZ",
+     "sign": 1,
+     "out": "ZZ"
+    }
+   ]
+  },
+  "SWAP": {
+   "qubits": 2,
+   "rows": [
+    {
+     "in": "IX",
+     "sign": 1,
+     "out": "XI"
+    },
+    {
+     "in": "IY",
+     "sign": 1,
+     "out": "YI"
+    },
+    {
+     "in": "IZ",
+     "sign": 1,
+     "out": "ZI"
+    },
+    {
+     "in": "XI",
+     "sign": 1,
+     "out": "IX"
+    },
+    {
+     "in": "XX",
+     "sign": 1,
+     "out": "XX"
+    },
+    {
+     "in": "XY",
+     "sign": 1,
+     "out": "YX"
+    },
+    {
+     "in": "XZ",
+     "sign": 1,
+     "out": "ZX"
+    },
+    {
+     "in": "YI",
+     "sign": 1,
+     "out": "IY"
+    },
+    {
+     "in": "YX",
+     "sign": 1,
+     "out": "XY"
+    },
+    {
+     "in": "YY",
+     "sign": 1,
+     "out": "YY"
+    },
+    {
+     "in": "YZ",
+     "sign": 1,
+     "out": "ZY"
+    },
+    {
+     "in": "ZI",
+     "sign": 1,
+     "out": "IZ"
+    },
+    {
+     "in": "ZX",
+     "sign": 1,
+     "out": "XZ"
+    },
+    {
+     "in": "ZY",
+     "sign": 1,
+     "out": "YZ"
+    },
+    {
+     "in": "ZZ",
+     "sign": 1,
+     "out": "ZZ"
+    }
+   ]
+  }
+ }
+}

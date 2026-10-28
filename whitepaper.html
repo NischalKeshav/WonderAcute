@@ -1,0 +1,631 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>Modern Architecture for Quantum Computers</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column (~68ch) on a cool paper ground; figures may widen to 880px. */
+:root {
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --fg: #151824;
+  --muted: #5c6274;
+  --line: #d7dae4;
+  --line-soft: #e8eaf1;
+  --accent: #5a3ecf;
+  --accent-soft: #ece8fb;
+  --accent-ink: #3f2a9e;
+  --qubit: #8a3fd1;
+  --qubit-fill: #e9dbf7;
+  --tool: #c46a12;
+  --tool-fill: #fbe6cf;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --grid: #e3e5ee;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111319; --surface: #191c26; --fg: #eceef5; --muted: #a2a8bb;
+    --line: #2d313f; --line-soft: #232735; --accent: #a99af2; --accent-soft: #272443;
+    --accent-ink: #c8bdfa; --qubit: #b98af0; --qubit-fill: #33264a; --tool: #e69a4a; --tool-fill: #3d2d1a;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --grid: #262a37; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111319; --surface: #191c26; --fg: #eceef5; --muted: #a2a8bb;
+  --line: #2d313f; --line-soft: #232735; --accent: #a99af2; --accent-soft: #272443;
+  --accent-ink: #c8bdfa; --qubit: #b98af0; --qubit-fill: #33264a; --tool: #e69a4a; --tool-fill: #3d2d1a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --grid: #262a37; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding-block: 48px 96px; padding-inline: 20px; }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.01em; margin: 0; }
+h1 { font-size: clamp(34px, 5.5vw, 54px); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 27px; line-height: 1.2; font-weight: 700; margin-top: 64px; margin-bottom: 14px; display: flex; gap: 14px; align-items: baseline; }
+h2 .num { font-family: var(--font-mono); font-size: 14px; color: var(--accent); font-weight: 500; letter-spacing: 0.04em; }
+h3 { font-size: 19px; font-weight: 600; margin-top: 30px; margin-bottom: 8px; }
+p { margin: 0 0 16px; }
+p.lede { font-size: 20px; line-height: 1.5; color: var(--fg); }
+a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+/* Masthead */
+.mast { border-bottom: 1px solid var(--line); padding-bottom: 32px; margin-bottom: 40px; display: grid; gap: 18px; }
+.mast .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; color: var(--muted); }
+.mast .meta b { color: var(--fg); font-weight: 500; }
+.tag { display: inline-block; justify-self: start; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent-soft); padding: 4px 10px; border-radius: 4px; }
+
+/* Key claims */
+.claims { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 28px 0 8px; }
+.claim { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; min-width: 0; }
+.claim .k { font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1; color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.claim .l { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+@media (max-width: 640px) { .claims { grid-template-columns: 1fr; } }
+
+/* Figures */
+figure { margin: 28px 0 32px; }
+figure.wide { margin-inline: 0; }
+.fig-frame { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; overflow-x: auto; }
+figure svg { max-width: 100%; height: auto; display: block; }
+figcaption { font-size: 14px; color: var(--muted); line-height: 1.55; margin-top: 12px; max-width: 68ch; }
+figcaption b { color: var(--fg); font-weight: 600; }
+.fig-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.svg-text { fill: var(--fg); font-family: var(--font-body); font-size: 12px; }
+.svg-muted { fill: var(--muted); font-family: var(--font-body); font-size: 11px; }
+.svg-mono { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.qb { fill: var(--qubit-fill); stroke: var(--qubit); stroke-width: 1.5; }
+.qb-active { fill: var(--qubit); stroke: var(--qubit); stroke-width: 1.5; }
+.tool-shape { fill: var(--tool-fill); stroke: var(--tool); stroke-width: 1.5; }
+.box { fill: var(--surface); stroke: var(--fg); stroke-width: 1.2; }
+.box-soft { fill: var(--bg); stroke: var(--line); stroke-width: 1; }
+.wire { stroke: var(--muted); stroke-width: 1.2; fill: none; }
+.wire-strong { stroke: var(--fg); stroke-width: 1.4; fill: none; }
+.wire-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.wire-dash { stroke-dasharray: 4 4; }
+
+/* Charts */
+.chart { position: relative; }
+.chart .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.chart .legend span { display: inline-flex; align-items: center; gap: 8px; }
+.chart .legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.chart .grid line { stroke: var(--grid); stroke-width: 1; }
+.chart .axis line { stroke: var(--line); stroke-width: 1; }
+.chart .tick { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.chart .axis-label { fill: var(--muted); font-family: var(--font-body); font-size: 12px; }
+.chart .series { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .dlabel { font-family: var(--font-body); font-size: 12px; fill: var(--fg); font-weight: 500; }
+.chart .xhair { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; display: none; }
+.chart .dot { stroke: var(--surface); stroke-width: 2; display: none; }
+.chart .hit { fill: transparent; }
+.tip { position: absolute; pointer-events: none; display: none; background: var(--fg); color: var(--bg); font-size: 12px; line-height: 1.45; padding: 8px 10px; border-radius: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 2; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+.tip b { font-weight: 600; }
+.tip .row { display: flex; gap: 10px; justify-content: space-between; }
+.tip .row i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+/* Tables */
+table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 18px 0 8px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--fg); }
+td.n { text-align: right; font-family: var(--font-mono); font-size: 14px; }
+.table-wrap { overflow-x: auto; }
+details { margin: 14px 0; font-size: 14px; color: var(--muted); }
+summary { cursor: pointer; color: var(--accent-ink); font-weight: 500; }
+
+/* Math */
+.math { font-family: "Times New Roman", "STIX Two Text", serif; font-size: 19px; display: block; text-align: center; margin: 18px 0; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; }
+.math i { font-style: italic; }
+.math .op { padding: 0 4px; }
+var { font-family: "Times New Roman", "STIX Two Text", serif; font-style: italic; font-size: 1.05em; }
+
+/* Callouts and lists */
+.note { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 20px 0; font-size: 15px; }
+.note .eyebrow { color: var(--accent-ink); margin-bottom: 4px; display: block; }
+ol, ul { padding-left: 22px; margin: 0 0 16px; }
+li { margin-bottom: 8px; }
+li b { font-weight: 600; }
+.objectives { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 8px; }
+.objectives div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; min-width: 0; }
+.objectives h3 { margin-top: 0; font-size: 17px; }
+.objectives p { font-size: 15px; color: var(--muted); margin: 6px 0 0; }
+@media (max-width: 640px) { .objectives { grid-template-columns: 1fr; } }
+.refs { font-size: 15px; color: var(--muted); }
+.refs li { margin-bottom: 10px; }
+.foot { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.toc { display: grid; gap: 6px; font-size: 15px; margin: 24px 0 0; padding: 0; list-style: none; }
+.toc li { display: flex; gap: 12px; align-items: baseline; margin: 0; }
+.toc .num { font-family: var(--font-mono); font-size: 12px; color: var(--accent); width: 22px; flex: none; }
+.toc a { color: var(--fg); text-decoration: none; }
+.toc a:hover { color: var(--accent-ink); text-decoration: underline; }
+@media (prefers-reduced-motion: no-preference) { .chart .series { transition: opacity 0.15s; } }
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <span class="tag">Whitepaper</span>
+  <h1>Modern Architecture for Quantum Computers</h1>
+  <p class="lede col">An oracle-based memory sector, a small set of active qubits, and a clock that packs operations into ticks. Together they let a classical controller absorb whole classes of quantum gates and share one oracle across parallel algorithm instances.</p>
+  <div class="meta">
+    <span>Author <b>Nischal Keshav</b></span>
+    <span>Edition <b>Whitepaper v1.0 · September 2026</b></span>
+    <span>Basis <b>Working paper, 7 pp.</b></span>
+  </div>
+</header>
+
+<section class="col">
+  <span class="eyebrow">Summary</span>
+  <p>Quantum computing research has concentrated on algorithms and, more recently, on qubit hardware. Far less attention has gone to the layer between them: how memory is organised, how operations are scheduled, and how the machine keeps its qubits coherent for the duration of a program. This paper proposes an architecture for that layer.</p>
+  <p>The design has two components. The first is an <b>oracle-based memory unit</b>: a sector of inactive, read-only qubit lines that answers address queries, kept physically separate from a small set of <b>active lines</b> where computation happens. A classical controller sits between them. The second is a <b>quantum clock cycle</b>: operation tools fire on every tick, and the design packs as many operations into a tick as possible so that a program finishes in fewer cycles and accumulates less error before measurement.</p>
+  <p>Three consequences follow, and each is developed below with a figure.</p>
+  <div class="claims">
+    <div class="claim"><div class="k">0</div><div class="l">quantum gates needed to perform Pauli-X or SWAP. The controller rewrites the address table instead.</div></div>
+    <div class="claim"><div class="k">66%</div><div class="l">fewer qubits to run three Grover instances against a 1,024-line oracle, because all three share it.</div></div>
+    <div class="claim"><div class="k">1–2×n</div><div class="l">fewer transforms per algorithm run for the Fourier transform and Shor's factoring, where n is the qubit count.</div></div>
+  </div>
+  <ol class="toc">
+    <li><span class="num">01</span><a href="#gap">The architecture gap</a></li>
+    <li><span class="num">02</span><a href="#objectives">Design objectives</a></li>
+    <li><span class="num">03</span><a href="#memory">The oracle-based memory unit</a></li>
+    <li><span class="num">04</span><a href="#gates">Gates that become address changes</a></li>
+    <li><span class="num">05</span><a href="#clock">The quantum clock cycle and error</a></li>
+    <li><span class="num">06</span><a href="#grover">Sharing the oracle: parallel Grover</a></li>
+    <li><span class="num">07</span><a href="#limits">Assumptions and open work</a></li>
+  </ol>
+</section>
+
+<section class="col" id="gap">
+  <h2><span class="num">01</span>The architecture gap</h2>
+  <p>The applications of quantum computers have been analysed exhaustively, from materials science to breaking public-key encryption. Work on physical qubits has grown quickly. What has been passed over is the architecture: a definitive account of how memory and logic are managed once a program is more than a circuit on a whiteboard.</p>
+  <p>A hand-wave at memory works when the goal is to show that some task is possible in principle. It does not work when the goal is a productive machine. The classical computer became useful only after the von Neumann layout gave engineers a fixed vocabulary of memory, control and arithmetic. This paper attempts the same for a quantum machine. It is not a physical project, but it references the physical processes, in particular decoherence, that constrain every choice.</p>
+</section>
+
+<section class="col" id="objectives">
+  <h2><span class="num">02</span>Design objectives</h2>
+  <p>Two requirements govern the design. Both are stated in the language of asymptotic complexity so that they can be checked as qubit counts grow.</p>
+  <div class="objectives">
+    <div><h3>Scalable</h3><p>Efficiency must hold as the number of qubits and the number of operations increase. Resource cost is measured in O-notation: operations and memory slots needed as input size grows.</p></div>
+    <div><h3>Compatible</h3><p>Every function that existing theoretical models can compute must run on this architecture at the same asymptotic efficiency. Nothing that is possible on a gate-model machine may become impossible here.</p></div>
+  </div>
+</section>
+
+<section id="memory">
+  <div class="col">
+  <h2><span class="num">03</span>The oracle-based memory unit</h2>
+  <p>The memory centre of the machine behaves as an oracle. When it receives a string of bits (an address), it returns some other qubits. The paper uses <b>line</b> as a synonym for qubit, because the language of wiring reads more naturally when describing a machine.</p>
+  <p>Lines are of two kinds. <b>Inactive lines</b> make up the memory sector. They are read-only from the program's point of view and hold the function or data the program consults. <b>Active lines</b> are where the majority of computation happens. Each active line has an operation tool attached that can apply a unitary to it on a clock tick. Inactive lines also have tools attached, but those tools never commit a change.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 1 · System layout</div>
+    <div class="fig-frame">
+    <svg viewBox="0 0 760 420" role="img" aria-label="A memory sector of read-only qubit lines feeds a classical controller, which addresses a row of active qubits with operation tools attached; a measurement device reads the active row out as classical bits.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+      </defs>
+      <!-- memory sector -->
+      <rect x="40" y="40" width="330" height="200" rx="8" class="box-soft"/>
+      <text x="56" y="64" class="svg-text" font-weight="600">Memory sector · inactive lines (read-only oracle)</text>
+      <g>
+        <!-- 3 rows x 5 -->
+        <g class="qb">
+          <circle cx="80" cy="105" r="16"/><circle cx="140" cy="105" r="16"/><circle cx="200" cy="105" r="16"/><circle cx="260" cy="105" r="16"/><circle cx="320" cy="105" r="16"/>
+          <circle cx="80" cy="155" r="16"/><circle cx="140" cy="155" r="16"/><circle cx="200" cy="155" r="16"/><circle cx="260" cy="155" r="16"/><circle cx="320" cy="155" r="16"/>
+          <circle cx="80" cy="205" r="16"/><circle cx="140" cy="205" r="16"/><circle cx="200" cy="205" r="16"/><circle cx="260" cy="205" r="16"/><circle cx="320" cy="205" r="16"/>
+        </g>
+        <g class="svg-mono" text-anchor="middle">
+          <text x="80" y="109">a0</text><text x="140" y="109">a1</text><text x="200" y="109">a2</text><text x="260" y="109">a3</text><text x="320" y="109">a4</text>
+          <text x="80" y="159">a5</text><text x="140" y="159">a6</text><text x="200" y="159">a7</text><text x="260" y="159">a8</text><text x="320" y="159">a9</text>
+          <text x="80" y="209">a10</text><text x="140" y="209">a11</text><text x="200" y="209">a12</text><text x="260" y="209">a13</text><text x="320" y="209">a14</text>
+        </g>
+      </g>
+      <!-- controller -->
+      <rect x="470" y="110" width="220" height="70" rx="6" class="box"/>
+      <text x="580" y="140" text-anchor="middle" class="svg-text" font-weight="600">Classical controller</text>
+      <text x="580" y="158" text-anchor="middle" class="svg-muted">address table · clock · schedule</text>
+      <!-- memory -> controller -->
+      <path d="M370 130 H462" class="wire-strong" style="color: var(--fg)" marker-end="url(#ar)"/>
+      <text x="416" y="120" text-anchor="middle" class="svg-muted">address in</text>
+      <path d="M462 160 H370" class="wire-strong" style="color: var(--fg)" marker-end="url(#ar)"/>
+      <text x="416" y="176" text-anchor="middle" class="svg-muted">oracle value out</text>
+      <!-- active row -->
+      <rect x="40" y="290" width="440" height="90" rx="8" class="box-soft"/>
+      <text x="56" y="312" class="svg-text" font-weight="600">Active lines</text>
+      <!-- tools above active -->
+      <g class="tool-shape">
+        <path d="M100 260 h28 v14 l-14 12 -14 -12 z"/><path d="M180 260 h28 v14 l-14 12 -14 -12 z"/><path d="M260 260 h28 v14 l-14 12 -14 -12 z"/><path d="M340 260 h28 v14 l-14 12 -14 -12 z"/><path d="M420 260 h28 v14 l-14 12 -14 -12 z"/>
+      </g>
+      <line x1="128" y1="267" x2="180" y2="267" class="wire"/><line x1="208" y1="267" x2="260" y2="267" class="wire"/><line x1="288" y1="267" x2="340" y2="267" class="wire"/><line x1="368" y1="267" x2="420" y2="267" class="wire"/>
+      <text x="470" y="256" class="svg-muted" text-anchor="end">operation tools (unitaries, linked across lines)</text>
+      <g class="qb-active">
+        <circle cx="114" cy="346" r="16"/><circle cx="194" cy="346" r="16"/><circle cx="274" cy="346" r="16"/><circle cx="354" cy="346" r="16"/><circle cx="434" cy="346" r="16"/>
+      </g>
+      <g class="svg-mono" text-anchor="middle" style="fill: var(--surface)">
+        <text x="114" y="350">q0</text><text x="194" y="350">q1</text><text x="274" y="350">q2</text><text x="354" y="350">q3</text><text x="434" y="350">q4</text>
+      </g>
+      <!-- controller -> tools -->
+      <path d="M560 180 V232 H274 V252" class="wire-accent" style="color: var(--accent)" marker-end="url(#ar)"/>
+      <text x="600" y="215" class="svg-muted" text-anchor="start">fires tools each tick;</text>
+      <text x="600" y="230" class="svg-muted" text-anchor="start">remaps addresses for X / SWAP</text>
+      <!-- measurement -->
+      <rect x="560" y="316" width="130" height="60" rx="6" class="box"/>
+      <text x="625" y="340" text-anchor="middle" class="svg-text" font-weight="600">Measurement</text>
+      <text x="625" y="358" text-anchor="middle" class="svg-muted">collapses active row</text>
+      <path d="M480 346 H552" class="wire-strong" style="color: var(--fg)" marker-end="url(#ar)"/>
+      <text x="516" y="338" text-anchor="middle" class="svg-muted">read out</text>
+      <path d="M625 316 V300 Q625 290 615 290 H600 Q590 290 590 280 V188" class="wire wire-dash" style="color: var(--muted)" marker-end="url(#ar)"/>
+      <text x="640" y="290" class="svg-muted">classical bits</text>
+    </svg>
+    </div>
+    <figcaption><b>The three sectors of the machine.</b> The memory sector holds inactive lines that act as a read-only oracle. A classical controller resolves addresses, keeps the clock and schedules operation tools. Active lines carry the computation and are the only lines that are ever measured. Redrawn from the paper's Diagram 1 and its full-setup figure, with the controller's two roles labelled.</figcaption>
+  </figure>
+
+  <div class="col">
+  <p>Separating the two kinds of line pays off in two ways.</p>
+  <ol>
+    <li><b>Fewer physical resources and fewer phase-flip errors.</b> Qubits that are about to be operated on have to be prepared differently from qubits that are only being stored. If the two are not differentiated, the qubits that are not the target of an operation have a much higher chance of suffering a phase-flip error during it (De Wolf, 2023). Keeping the memory sector inert protects it.</li>
+    <li><b>Some quantum operations become classical adjustments.</b> Because the controller owns the mapping from address to line, several operations that would normally require a quantum gate can be performed by editing the address table. Pauli-X and SWAP are the paper's examples. Section 04 develops this.</li>
+  </ol>
+  <p>A caution follows from the physics. Operations must preserve superposition, and simply "flipping a switch" on a line would force it to decide a state. Quantum operations are unitary, reversible and represented by matrices. Whatever technology applies them, it must do so either instantaneously or in a way that never requires the qubit to choose between states mid-operation. The architecture is agnostic about which technology is used, so long as it is viable under the current model of quantum computing.</p>
+  </div>
+</section>
+
+<section id="gates">
+  <div class="col">
+  <h2><span class="num">04</span>Gates that become address changes</h2>
+  <p>The claim in section 03 is that some gates can be removed from the quantum circuit entirely. The argument runs as follows.</p>
+  <p>Every quantum gate is a unitary matrix. Let <var>U</var> be any transformation the machine is about to apply to its active lines, and let <var>X<sub>n</sub></var> be a Pauli-X gate acting on the <var>n</var>th line (the identity on every other line). The product of two unitaries is unitary:</p>
+  <span class="math">(<i>U X<sub>n</sub></i>)<sup>†</sup>(<i>U X<sub>n</sub></i>) <span class="op">=</span> <i>X<sub>n</sub></i><sup>†</sup> <i>U</i><sup>†</sup> <i>U X<sub>n</sub></i> <span class="op">=</span> <i>X<sub>n</sub></i><sup>†</sup> <i>X<sub>n</sub></i> <span class="op">=</span> <i>I</i></span>
+  <p>So <var>U X<sub>n</sub></var> is itself a single valid transformation, and the X gate need not be applied as a separate step. The same holds for a SWAP between lines <var>i</var> and <var>j</var>, which is a permutation matrix <var>P<sub>ij</sub></var>: <var>U P<sub>ij</sub></var> is unitary. In this architecture the controller does not even need to compile a new operator. Because it owns the address table, a SWAP is performed by exchanging the two address entries, and an X is recorded as a flip flag on the line's entry that the next lookup honours. No quantum gate fires, so no clock tick is spent and no gate error is introduced.</p>
+  <div class="note"><span class="eyebrow">Scope of the proof</span>The proof shows the combined transformation exists and is legal. It does not say that a dedicated <var>U X<sub>n</sub></var> operator must be built for each case; other technology can realise it. The paper's LaTeX derivation was left for its final version. The derivation above restates the argument in full.</div>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 2 · SWAP without a gate</div>
+    <div class="fig-frame">
+    <svg viewBox="0 0 760 250" role="img" aria-label="Left: a conventional SWAP gate applied between two qubit lines costs one quantum operation on a clock tick. Right: the same effect is achieved by exchanging two rows of the controller's address table, with zero quantum operations.">
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+      <!-- left: gate model -->
+      <text x="40" y="34" class="svg-text" font-weight="600">Gate model</text>
+      <text x="40" y="52" class="svg-muted">1 quantum operation · 1 clock tick · adds gate error</text>
+      <line x1="40" y1="100" x2="330" y2="100" class="wire-strong" style="color: var(--fg)"/>
+      <line x1="40" y1="160" x2="330" y2="160" class="wire-strong" style="color: var(--fg)"/>
+      <text x="40" y="92" class="svg-mono">q<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+      <text x="40" y="152" class="svg-mono">q<tspan baseline-shift="sub" font-size="9">j</tspan></text>
+      <line x1="185" y1="100" x2="185" y2="160" class="wire-strong" style="color: var(--tool); stroke: var(--tool)"/>
+      <path d="M177 92 L193 108 M193 92 L177 108" stroke="var(--tool)" stroke-width="2" fill="none"/>
+      <path d="M177 152 L193 168 M193 152 L177 168" stroke="var(--tool)" stroke-width="2" fill="none"/>
+      <text x="185" y="200" text-anchor="middle" class="svg-muted">SWAP tool fires on tick k</text>
+      <text x="300" y="92" text-anchor="end" class="svg-mono">→ q<tspan baseline-shift="sub" font-size="9">j</tspan></text>
+      <text x="300" y="152" text-anchor="end" class="svg-mono">→ q<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+      <!-- divider -->
+      <line x1="380" y1="30" x2="380" y2="220" class="wire" style="stroke: var(--line)"/>
+      <!-- right: address remap -->
+      <text x="420" y="34" class="svg-text" font-weight="600">This architecture</text>
+      <text x="420" y="52" class="svg-muted">0 quantum operations · 0 ticks · classical write only</text>
+      <!-- before table -->
+      <rect x="420" y="76" width="120" height="96" rx="4" class="box-soft"/>
+      <text x="480" y="70" text-anchor="middle" class="svg-mono">address table, before</text>
+      <line x1="420" y1="100" x2="540" y2="100" class="wire" style="stroke: var(--line)"/>
+      <text x="430" y="93" class="svg-mono">addr</text><text x="490" y="93" class="svg-mono">line</text>
+      <text x="430" y="124" class="svg-mono">i</text><text x="490" y="124" class="svg-mono" style="fill: var(--fg)">q<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+      <text x="430" y="156" class="svg-mono">j</text><text x="490" y="156" class="svg-mono" style="fill: var(--fg)">q<tspan baseline-shift="sub" font-size="9">j</tspan></text>
+      <!-- arrow -->
+      <path d="M548 124 H590" class="wire-accent" style="color: var(--accent)" marker-end="url(#ar2)"/>
+      <text x="570" y="112" text-anchor="middle" class="svg-muted">controller</text>
+      <text x="570" y="146" text-anchor="middle" class="svg-muted">swaps rows</text>
+      <!-- after table -->
+      <rect x="600" y="76" width="120" height="96" rx="4" class="box-soft"/>
+      <text x="660" y="70" text-anchor="middle" class="svg-mono">address table, after</text>
+      <line x1="600" y1="100" x2="720" y2="100" class="wire" style="stroke: var(--line)"/>
+      <text x="610" y="93" class="svg-mono">addr</text><text x="670" y="93" class="svg-mono">line</text>
+      <text x="610" y="124" class="svg-mono">i</text><text x="670" y="124" class="svg-mono" style="fill: var(--accent-ink)" font-weight="500">q<tspan baseline-shift="sub" font-size="9">j</tspan></text>
+      <text x="610" y="156" class="svg-mono">j</text><text x="670" y="156" class="svg-mono" style="fill: var(--accent-ink)" font-weight="500">q<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+      <text x="570" y="200" text-anchor="middle" class="svg-muted">Qubits never touched. The next lookup for i returns the line formerly at j,</text>
+      <text x="570" y="216" text-anchor="middle" class="svg-muted">the same way an X flag inverts the value a lookup returns.</text>
+    </svg>
+    </div>
+    <figcaption><b>Two ways to swap lines <var>i</var> and <var>j</var>.</b> The gate model spends a tick and a two-qubit operation. The oracle-based architecture spends a classical write to the address table. The X gate is handled the same way with a per-entry flip flag.</figcaption>
+  </figure>
+
+  <div class="col">
+  <h3>What this removes from real algorithms</h3>
+  <p>The paper tabulates the reduction in transforms per qubit for three canonical algorithms once SWAP and X gates are taken out of the quantum circuit. The saving is linear in the qubit count in every case; the constant differs.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Algorithm</th><th>Transforms removed per qubit</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Quantum Fourier Transform</td><td class="n">1 · n</td><td>The bit-reversal SWAP network at the end of the QFT becomes an address permutation.</td></tr>
+      <tr><td>Grover's algorithm</td><td class="n">linear</td><td>Exact rate depends on how the oracle and diffusion step are compiled.</td></tr>
+      <tr><td>Shor's algorithm (factoring)</td><td class="n">2 · n</td><td>Rate is further multiplied by the error rate, since fewer gates also means fewer repetitions.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 3 · Transforms removed</div>
+    <div class="fig-frame">
+      <div class="chart" id="chart-gates"></div>
+    </div>
+    <figcaption><b>Quantum transforms removed from a single algorithm run, by register size.</b> QFT saves one transform per qubit; Shor saves two. Grover is omitted because the paper gives its rate only as "linear, depends on the algorithm". Both lines plot the paper's stated rates; hover for values.</figcaption>
+  </figure>
+</section>
+
+<section id="clock">
+  <div class="col">
+  <h2><span class="num">05</span>The quantum clock cycle and error</h2>
+  <p>With memory in place, the paper turns to how operations are timed and how error is handled. The device is a clock. On every tick, the operation tools attached to the active lines fire. The scheduling rule is simple: <b>apply as many operations as possible in each tick</b>. Fewer ticks means less wall-clock time in superposition, and therefore less exposure to the error-applying operator the paper models as a Kraus operator.</p>
+  <p>Calibration and similar mechanical techniques remove some error, as in any machine, but some error is unavoidable. The standard remedy is repetition: run the function several times and take the consensus. Repetition requires a machine that already mostly works and consumes a great deal of resource. Section 06 shows how the memory architecture makes repetition cheap.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 4 · The clock cycle</div>
+    <div class="fig-frame">
+    <svg viewBox="0 0 760 240" role="img" aria-label="A timeline of clock ticks. On each tick the operation tools fire on the active lines; operations are packed several per tick. After the last tick the measurement device reads the active lines, collapsing their superposition.">
+      <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+      <!-- clock -->
+      <circle cx="70" cy="120" r="30" class="box"/>
+      <circle cx="70" cy="120" r="3" fill="var(--fg)"/>
+      <line x1="70" y1="120" x2="70" y2="100" stroke="var(--fg)" stroke-width="1.6"/>
+      <line x1="70" y1="120" x2="84" y2="128" stroke="var(--fg)" stroke-width="1.6"/>
+      <text x="70" y="172" text-anchor="middle" class="svg-text" font-weight="600">Clock</text>
+      <!-- timeline -->
+      <line x1="120" y1="120" x2="590" y2="120" class="wire-strong" style="color: var(--fg)" marker-end="url(#ar3)"/>
+      <!-- ticks -->
+      <g>
+        <line x1="170" y1="110" x2="170" y2="130" class="wire-strong"/>
+        <line x1="270" y1="110" x2="270" y2="130" class="wire-strong"/>
+        <line x1="370" y1="110" x2="370" y2="130" class="wire-strong"/>
+        <line x1="470" y1="110" x2="470" y2="130" class="wire-strong"/>
+      </g>
+      <g class="svg-mono" text-anchor="middle">
+        <text x="170" y="150">tick 1</text><text x="270" y="150">tick 2</text><text x="370" y="150">tick 3</text><text x="470" y="150">tick k</text>
+      </g>
+      <text x="420" y="150" text-anchor="middle" class="svg-mono">…</text>
+      <!-- packed ops per tick -->
+      <g class="tool-shape">
+        <path d="M150 40 h16 v9 l-8 7 -8 -7 z"/><path d="M170 40 h16 v9 l-8 7 -8 -7 z"/><path d="M190 40 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M150 62 h16 v9 l-8 7 -8 -7 z"/><path d="M170 62 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M250 40 h16 v9 l-8 7 -8 -7 z"/><path d="M270 40 h16 v9 l-8 7 -8 -7 z"/><path d="M290 40 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M250 62 h16 v9 l-8 7 -8 -7 z"/><path d="M270 62 h16 v9 l-8 7 -8 -7 z"/><path d="M290 62 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M350 40 h16 v9 l-8 7 -8 -7 z"/><path d="M370 40 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M350 62 h16 v9 l-8 7 -8 -7 z"/><path d="M370 62 h16 v9 l-8 7 -8 -7 z"/><path d="M390 62 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M450 40 h16 v9 l-8 7 -8 -7 z"/><path d="M470 40 h16 v9 l-8 7 -8 -7 z"/><path d="M490 40 h16 v9 l-8 7 -8 -7 z"/>
+        <path d="M450 62 h16 v9 l-8 7 -8 -7 z"/>
+      </g>
+      <line x1="178" y1="82" x2="178" y2="106" class="wire" marker-end="url(#ar3)" style="color: var(--muted)"/>
+      <line x1="278" y1="82" x2="278" y2="106" class="wire" marker-end="url(#ar3)" style="color: var(--muted)"/>
+      <line x1="378" y1="82" x2="378" y2="106" class="wire" marker-end="url(#ar3)" style="color: var(--muted)"/>
+      <line x1="478" y1="82" x2="478" y2="106" class="wire" marker-end="url(#ar3)" style="color: var(--muted)"/>
+      <text x="150" y="28" class="svg-muted">operation tools fire, packed per tick (X and SWAP absent: done in the address table)</text>
+      <!-- error accumulation bar -->
+      <rect x="150" y="186" width="340" height="8" rx="4" fill="var(--line-soft)"/>
+      <rect x="150" y="186" width="340" height="8" rx="4" fill="url(#errgrad)"/>
+      <defs><linearGradient id="errgrad" x1="0" x2="1"><stop offset="0" stop-color="var(--s3)" stop-opacity="0.15"/><stop offset="1" stop-color="var(--s2)" stop-opacity="0.9"/></linearGradient></defs>
+      <text x="150" y="214" class="svg-muted">error (Kraus operator) accumulates with every tick spent in superposition</text>
+      <!-- measurement -->
+      <rect x="610" y="90" width="120" height="60" rx="6" class="box"/>
+      <text x="670" y="114" text-anchor="middle" class="svg-text" font-weight="600">Measure</text>
+      <text x="670" y="132" text-anchor="middle" class="svg-muted">wave collapses</text>
+      <text x="670" y="172" text-anchor="middle" class="svg-muted">most information</text>
+      <text x="670" y="186" text-anchor="middle" class="svg-muted">is destroyed here</text>
+    </svg>
+    </div>
+    <figcaption><b>One program as a sequence of ticks.</b> Every tick fires the operation tools on the active lines. Because X and SWAP have moved to the address table, the remaining operations are packed several to a tick. Measurement ends the run and destroys the superposition. Redrawn from the paper's Diagram 2.</figcaption>
+  </figure>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 5 · Why fewer ticks matter</div>
+    <div class="fig-frame">
+      <div class="chart" id="chart-error"></div>
+    </div>
+    <figcaption><b>Illustrative model of surviving state fidelity against operations performed.</b> Assumes an independent 1% error per clock tick and compares one operation per tick with four per tick. This chart is the whitepaper's own illustration of the paper's argument that packing operations reduces exposure to error; the paper does not give numeric error rates.</figcaption>
+  </figure>
+</section>
+
+<section id="grover">
+  <div class="col">
+  <h2><span class="num">06</span>Sharing the oracle: parallel Grover</h2>
+  <p>Grover's algorithm takes a function, presented as an oracle, and a goal value, and searches for the input that produces the goal. It is a workhorse in materials science and other fields where a black-box function must be inverted (IBM, n.d.). It is also the natural test of this architecture, because the architecture's memory sector already <em>is</em> an oracle. The values of the function are loaded into the inactive lines as a list, and Grover's oracle query becomes a memory lookup.</p>
+  <p>Running Grover once shows nothing special. Running it several times at once does. Repetition is the standard error remedy, and on a conventional machine three simultaneous instances against a 128-line oracle need three copies of the oracle, so three times the qubits. Here the three instances share the one oracle. Only the active lines are duplicated, and the active register for a search over <var>N</var> entries is about log<sub>2</sub> <var>N</var> lines.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 6 · Qubits required, three simultaneous Grover instances</div>
+    <div class="fig-frame">
+      <div class="chart" id="chart-grover"></div>
+    </div>
+    <figcaption><b>Total qubits needed to run three instances of Grover's algorithm against an oracle of a given size.</b> The conventional model needs 3<var>N</var>. The oracle-based model needs <var>N</var> for the shared oracle plus 3 × ⌈log<sub>2</sub> <var>N</var>⌉ active lines. Reconstructs the paper's Diagram 3, whose points were calculated by hand, using that formula.</figcaption>
+  </figure>
+
+  <div class="col">
+  <p>The gap widens with the number of instances, since the oracle is paid for once regardless. The paper's own example is three instances; the chart below extends the same accounting to eight.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="fig-label">Figure 7 · Scaling with instance count, 128-line oracle</div>
+    <div class="fig-frame">
+      <div class="chart" id="chart-instances"></div>
+    </div>
+    <figcaption><b>Qubits needed for <var>k</var> simultaneous instances against the paper's 128-line oracle.</b> Conventional cost is 128<var>k</var>. Shared-oracle cost is 128 + 7<var>k</var>. The whitepaper extends the paper's three-instance example to <var>k</var> = 1 … 8 using the same formula.</figcaption>
+  </figure>
+
+  <div class="col">
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Oracle size N</th><th>Conventional (3N)</th><th>Oracle-based (N + 3⌈log₂N⌉)</th><th>Saving</th></tr></thead>
+    <tbody>
+      <tr><td>128</td><td class="n">384</td><td class="n">149</td><td class="n">61%</td></tr>
+      <tr><td>256</td><td class="n">768</td><td class="n">280</td><td class="n">64%</td></tr>
+      <tr><td>512</td><td class="n">1,536</td><td class="n">539</td><td class="n">65%</td></tr>
+      <tr><td>1,024</td><td class="n">3,072</td><td class="n">1,054</td><td class="n">66%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The paper's hypothetical benchmark concluded that the architecture has the potential to assist any algorithm that consults a black-box function, since every such algorithm can treat the memory sector as its oracle and share it across repetitions. It also frames this as linear optimisation obtained without new technology: the same qubits, arranged differently.</p>
+  </div>
+</section>
+
+<section class="col" id="limits">
+  <h2><span class="num">07</span>Assumptions and open work</h2>
+  <p>The source is a working paper, and the whitepaper preserves its scope. The following points are stated so that a reader can weigh the claims.</p>
+  <ul>
+    <li><b>Hand-calculated benchmark.</b> The Grover qubit counts in the paper were computed by hand. Figures 6 and 7 rebuild them from an explicit formula, and the formula is given in each caption so it can be checked.</li>
+    <li><b>Error model is qualitative.</b> The paper names a hypothetical Kraus operator as the source of error but gives no rates. Figure 5 uses an assumed 1% per tick purely to illustrate the direction of the effect.</li>
+    <li><b>Physical realisation is out of scope.</b> The architecture is stated to be compatible with any operation technology that keeps superposition intact. Which technology, and how the memory sector's oracle lookup is physically implemented, is not addressed.</li>
+    <li><b>Grover's per-qubit saving is unquantified.</b> The paper reports it as linear with an algorithm-dependent constant.</li>
+    <li><b>Formal derivations pending.</b> The paper marks its LaTeX proof for a later version. Section 04 restates the unitary-product argument in full; a longer treatment covering compatibility (objective 2) for arbitrary circuits remains to be written.</li>
+  </ul>
+</section>
+
+<section class="col">
+  <h2><span class="num">—</span>References</h2>
+  <ol class="refs">
+    <li>De Wolf, R. <i>Quantum Computing: Lecture Notes.</i> 2019, revised 2023.</li>
+    <li>IBM Quantum. "Grover's algorithm." IBM Quantum Learning, n.d.</li>
+    <li>Keshav, N. <i>Modern Architecture for Quantum Computers.</i> Working paper, 7 pp. Source document for this whitepaper.</li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <span>Modern Architecture for Quantum Computers · Whitepaper v1.0</span>
+  <span>Figures 1, 2 and 4 are redrawn from the source paper. Figures 3, 5, 6 and 7 are computed from the paper's stated rates and formulas.</span>
+</footer>
+</div>
+
+<script>
+(function () {
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = (v, d) => v.toLocaleString(undefined, { maximumFractionDigits: d == null ? 0 : d, minimumFractionDigits: d == null ? 0 : d });
+
+  function lineChart(el, cfg) {
+    const W = 720, H = 360, m = { t: 20, r: 96, b: 48, l: 64 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const xs = cfg.series[0].points.map(p => p[0]);
+    const xmin = cfg.xmin ?? Math.min(...xs), xmax = cfg.xmax ?? Math.max(...xs);
+    const ymin = cfg.ymin ?? 0;
+    const ymax = cfg.ymax ?? Math.max(...cfg.series.flatMap(s => s.points.map(p => p[1])));
+    const sx = x => m.l + (x - xmin) / (xmax - xmin) * iw;
+    const sy = y => m.t + ih - (y - ymin) / (ymax - ymin) * ih;
+
+    const legend = `<div class="legend">${cfg.series.map(s => `<span><i style="background:var(${s.color})"></i>${s.name}</span>`).join('')}</div>`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${cfg.aria}">`;
+    svg += '<g class="grid">' + cfg.yTicks.map(t => `<line x1="${m.l}" x2="${m.l + iw}" y1="${sy(t)}" y2="${sy(t)}"/>`).join('') + '</g>';
+    svg += `<g class="axis"><line x1="${m.l}" x2="${m.l + iw}" y1="${sy(ymin)}" y2="${sy(ymin)}"/></g>`;
+    svg += cfg.yTicks.map(t => `<text class="tick" x="${m.l - 10}" y="${sy(t) + 4}" text-anchor="end">${cfg.yFmt ? cfg.yFmt(t) : fmt(t)}</text>`).join('');
+    svg += cfg.xTicks.map(t => `<text class="tick" x="${sx(t)}" y="${m.t + ih + 20}" text-anchor="middle">${cfg.xFmt ? cfg.xFmt(t) : fmt(t)}</text>`).join('');
+    svg += `<text class="axis-label" x="${m.l + iw / 2}" y="${H - 8}" text-anchor="middle">${cfg.xLabel}</text>`;
+    svg += `<text class="axis-label" transform="translate(14 ${m.t + ih / 2}) rotate(-90)" text-anchor="middle">${cfg.yLabel}</text>`;
+    // series
+    cfg.series.forEach((s, i) => {
+      const d = s.points.map((p, j) => (j ? 'L' : 'M') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1)).join(' ');
+      svg += `<path class="series" d="${d}" style="stroke:var(${s.color})"/>`;
+    });
+    // direct labels at line ends, nudged apart
+    const ends = cfg.series.map((s, i) => ({ i, y: sy(s.points[s.points.length - 1][1]), name: s.label || s.name })).sort((a, b) => a.y - b.y);
+    for (let k = 1; k < ends.length; k++) if (ends[k].y - ends[k - 1].y < 14) ends[k].y = ends[k - 1].y + 14;
+    ends.forEach(e => { svg += `<text class="dlabel" x="${m.l + iw + 10}" y="${e.y + 4}">${e.name}</text>`; });
+    // hover layer
+    svg += `<line class="xhair" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}"/>`;
+    cfg.series.forEach((s, i) => { svg += `<circle class="dot" r="4" cx="0" cy="0" style="fill:var(${s.color})" data-i="${i}"/>`; });
+    svg += `<rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/>`;
+    svg += '</svg>';
+    el.innerHTML = legend + svg + '<div class="tip"></div>';
+
+    const svgEl = el.querySelector('svg'), hit = el.querySelector('.hit'), xh = el.querySelector('.xhair'),
+          dots = el.querySelectorAll('.dot'), tip = el.querySelector('.tip');
+    const n = cfg.series[0].points.length;
+    function show(evt) {
+      const r = svgEl.getBoundingClientRect();
+      const px = (evt.clientX - r.left) / r.width * W;
+      const xv = xmin + (px - m.l) / iw * (xmax - xmin);
+      let best = 0, bd = Infinity;
+      cfg.series[0].points.forEach((p, j) => { const d = Math.abs(p[0] - xv); if (d < bd) { bd = d; best = j; } });
+      const x = cfg.series[0].points[best][0];
+      xh.setAttribute('x1', sx(x)); xh.setAttribute('x2', sx(x)); xh.style.display = 'block';
+      let rows = '';
+      cfg.series.forEach((s, i) => {
+        const y = s.points[best][1];
+        dots[i].setAttribute('cx', sx(x)); dots[i].setAttribute('cy', sy(y)); dots[i].style.display = 'block';
+        rows += `<div class="row"><span><i style="background:var(${s.color})"></i>${s.name}</span><b>${cfg.yFmt ? cfg.yFmt(y, true) : fmt(y)}</b></div>`;
+      });
+      tip.innerHTML = `<div><b>${cfg.xTip ? cfg.xTip(x) : (cfg.xLabel + ' ' + fmt(x))}</b></div>${rows}`;
+      tip.style.display = 'block';
+      const left = sx(x) / W * r.width, top = (evt.clientY - r.top) + el.querySelector('.legend').offsetHeight;
+      const tw = tip.offsetWidth;
+      tip.style.left = (left + 14 + tw > r.width ? left - tw - 14 : left + 14) + 'px';
+      tip.style.top = Math.max(0, top - 10) + 'px';
+    }
+    function hide() { xh.style.display = 'none'; dots.forEach(d => d.style.display = 'none'); tip.style.display = 'none'; }
+    hit.addEventListener('mousemove', show); hit.addEventListener('mouseleave', hide);
+    hit.addEventListener('touchstart', e => { show(e.touches[0]); }, { passive: true });
+    hit.addEventListener('touchmove', e => { show(e.touches[0]); }, { passive: true });
+    hit.addEventListener('touchend', hide);
+  }
+
+  const range = (a, b, s) => { const o = []; for (let x = a; x <= b; x += s) o.push(x); return o; };
+
+  // Figure 3: transforms removed per algorithm
+  const nq = range(0, 64, 4);
+  lineChart(document.getElementById('chart-gates'), {
+    aria: 'Transforms removed per run versus qubits in register, for the quantum Fourier transform (one per qubit) and Shor factoring (two per qubit).',
+    series: [
+      { name: 'Shor’s factoring', label: 'Shor (2n)', color: '--s2', points: nq.map(n => [n, 2 * n]) },
+      { name: 'Quantum Fourier Transform', label: 'QFT (n)', color: '--s1', points: nq.map(n => [n, n]) },
+    ],
+    xTicks: [0, 16, 32, 48, 64], yTicks: [0, 32, 64, 96, 128],
+    xLabel: 'qubits in register (n)', yLabel: 'transforms removed per run',
+    xTip: x => `n = ${x} qubits`,
+  });
+
+  // Figure 5: fidelity vs operations, 1% error per tick
+  const ops = range(0, 100, 5), p = 0.01;
+  lineChart(document.getElementById('chart-error'), {
+    aria: 'Surviving fidelity versus operations performed, assuming one percent error per clock tick, for one operation per tick and four operations per tick.',
+    series: [
+      { name: '4 operations per tick', label: '4 per tick', color: '--s2', points: ops.map(o => [o, Math.pow(1 - p, Math.ceil(o / 4))]) },
+      { name: '1 operation per tick', label: '1 per tick', color: '--s1', points: ops.map(o => [o, Math.pow(1 - p, o)]) },
+    ],
+    xTicks: [0, 25, 50, 75, 100], yTicks: [0, 0.25, 0.5, 0.75, 1], ymin: 0, ymax: 1,
+    xLabel: 'operations performed', yLabel: 'fidelity remaining (illustrative)',
+    yFmt: (v, tip) => tip ? (v * 100).toFixed(1) + '%' : Math.round(v * 100) + '%',
+    xTip: x => `${x} operations`,
+  });
+
+  // Figure 6: three Grover instances vs oracle size
+  const Ns = range(128, 1024, 32);
+  const modern = N => N + 3 * Math.ceil(Math.log2(N));
+  lineChart(document.getElementById('chart-grover'), {
+    aria: 'Qubits required for three simultaneous Grover instances versus oracle size. Conventional model rises as three N; the oracle-based model rises as N plus three times log two of N.',
+    series: [
+      { name: 'Conventional model (3N)', label: 'Conventional', color: '--s1', points: Ns.map(N => [N, 3 * N]) },
+      { name: 'Oracle-based model (N + 3⌈log₂N⌉)', label: 'Oracle-based', color: '--s2', points: Ns.map(N => [N, modern(N)]) },
+    ],
+    xTicks: [128, 256, 512, 768, 1024], yTicks: [0, 1000, 2000, 3000], xmin: 128, xmax: 1024, ymax: 3200,
+    xLabel: 'oracle size (lines)', yLabel: 'qubits required',
+    xTip: x => `oracle of ${fmt(x)} lines`,
+  });
+
+  // Figure 7: instances k vs qubits, N = 128
+  const ks = range(1, 8, 1);
+  lineChart(document.getElementById('chart-instances'), {
+    aria: 'Qubits required versus number of simultaneous Grover instances against a 128 line oracle. Conventional cost is 128 times k; shared-oracle cost is 128 plus 7 k.',
+    series: [
+      { name: 'Conventional (128k)', label: 'Conventional', color: '--s1', points: ks.map(k => [k, 128 * k]) },
+      { name: 'Shared oracle (128 + 7k)', label: 'Shared oracle', color: '--s2', points: ks.map(k => [k, 128 + 7 * k]) },
+    ],
+    xTicks: ks, yTicks: [0, 256, 512, 768, 1024], xmin: 1, xmax: 8, ymax: 1100,
+    xLabel: 'simultaneous instances (k)', yLabel: 'qubits required',
+    xTip: x => `${x} instance${x > 1 ? 's' : ''}`,
+  });
+})();
+</script>
+</body></html>
