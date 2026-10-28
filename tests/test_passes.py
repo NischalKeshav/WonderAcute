@@ -175,13 +175,13 @@ def test_cp_and_rzz_rewrite_under_pending_x(pattern):
     qc.rzz(0.4, 0, 1)
     qc.h(0)
     qc.cp(1.3, 1, 0)
-    res = compress(qc, "rewrite")
+    res = compress(qc, "rewrite", rewrite_cp=True)
     assert res.rewritten_2q >= 2
     assert res.flushed == 0
     assert unitary_equivalent(qc, res)
     res_f = compress(qc, "flush")
     assert res_f.rewritten_2q == 0 and res_f.flushed >= 1
     assert unitary_equivalent(qc, res_f)
-    res_n = compress(qc, "rewrite", rewrite_cp=False)
+    res_n = compress(qc, "rewrite")           # default: flush, not rewrite
     assert res_n.rewritten_2q == 0 and res_n.flushed >= 1
     assert unitary_equivalent(qc, res_n)

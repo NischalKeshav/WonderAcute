@@ -65,7 +65,8 @@ def main():
     ap.add_argument("--coupling", choices=["all", "line"], default="all")
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--policy", choices=["rewrite", "flush"], default="rewrite")
-    ap.add_argument("--no-cp-rewrite", action="store_true", help="flush X before CP instead of rewriting")
+    ap.add_argument("--cp-rewrite", action="store_true",
+                    help="rewrite CP/RZZ under a pending X (virtual-Z hardware); default flushes")
     args = ap.parse_args()
 
     ns_clifford = list(range(4, 17, 4)) if args.quick else list(range(4, 65, 4))
@@ -94,7 +95,7 @@ def main():
     except Exception:
         commit = "unknown"
     params = {"commit": commit, "coupling": args.coupling, "policy": args.policy,
-              "rewrite_cp": not args.no_cp_rewrite,
+              "rewrite_cp": args.cp_rewrite,
               "seeds": seeds, "quick": args.quick, "basis": __import__("qarch.metrics").metrics.BASIS,
               "random_layered": {"probs": circuits.DEFAULT_LAYER_PROBS, "depth": LAYER_DEPTH,
                                  "note": "fixed depth so gates grow linearly in n; saved/gates is the scale-free statistic"},
@@ -112,7 +113,7 @@ def main():
             for seed in (seeds if seeded else [0]):
                 qc = build(n, seed)
                 counts = evaluate(qc, coupling=args.coupling, seed=seed, policy=args.policy,
-                                  rewrite_cp=not args.no_cp_rewrite)
+                                  rewrite_cp=args.cp_rewrite)
                 all_rows += rows(family, n, counts, seed=seed, coupling=args.coupling)
             print(f"{family:>22} n={n:<3} "
                   + " ".join(f"{t}={counts[t].gates:<5}" for t in TREATMENTS)

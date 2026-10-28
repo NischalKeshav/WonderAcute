@@ -1,0 +1,153 @@
+                   ghz n=4   raw=4     pass=4     o3=4     o3+pass=4     pass+o3=4      (  0.0s)
+                   ghz n=8   raw=8     pass=8     o3=8     o3+pass=8     pass+o3=8      (  0.1s)
+                   ghz n=12  raw=12    pass=12    o3=12    o3+pass=12    pass+o3=12     (  0.1s)
+                   ghz n=16  raw=16    pass=16    o3=16    o3+pass=16    pass+o3=16     (  0.1s)
+                   ghz n=20  raw=20    pass=20    o3=20    o3+pass=20    pass+o3=20     (  0.1s)
+                   ghz n=24  raw=24    pass=24    o3=24    o3+pass=24    pass+o3=24     (  0.2s)
+                   ghz n=28  raw=28    pass=28    o3=28    o3+pass=28    pass+o3=28     (  0.2s)
+                   ghz n=32  raw=32    pass=32    o3=32    o3+pass=32    pass+o3=32     (  0.2s)
+                   ghz n=36  raw=36    pass=36    o3=36    o3+pass=36    pass+o3=36     (  0.3s)
+                   ghz n=40  raw=40    pass=40    o3=40    o3+pass=40    pass+o3=40     (  0.4s)
+                   ghz n=44  raw=44    pass=44    o3=44    o3+pass=44    pass+o3=44     (  0.5s)
+                   ghz n=48  raw=48    pass=48    o3=48    o3+pass=48    pass+o3=48     (  0.6s)
+                   ghz n=52  raw=52    pass=52    o3=52    o3+pass=52    pass+o3=52     (  0.7s)
+                   ghz n=56  raw=56    pass=56    o3=56    o3+pass=56    pass+o3=56     (  0.9s)
+                   ghz n=60  raw=60    pass=60    o3=60    o3+pass=60    pass+o3=60     (  1.0s)
+                   ghz n=64  raw=64    pass=64    o3=64    o3+pass=64    pass+o3=64     (  1.1s)
+    bernstein_vazirani n=4   raw=9     pass=8     o3=5     o3+pass=4     pass+o3=4      (  1.2s)
+    bernstein_vazirani n=8   raw=18    pass=17    o3=8     o3+pass=7     pass+o3=7      (  1.3s)
+    bernstein_vazirani n=12  raw=28    pass=27    o3=14    o3+pass=13    pass+o3=13     (  1.5s)
+    bernstein_vazirani n=16  raw=39    pass=38    o3=23    o3+pass=22    pass+o3=22     (  1.6s)
+    bernstein_vazirani n=20  raw=48    pass=47    o3=26    o3+pass=25    pass+o3=25     (  1.7s)
+    bernstein_vazirani n=24  raw=58    pass=57    o3=32    o3+pass=31    pass+o3=31     (  1.9s)
+    bernstein_vazirani n=28  raw=68    pass=67    o3=38    o3+pass=37    pass+o3=37     (  2.1s)
+    bernstein_vazirani n=32  raw=78    pass=77    o3=44    o3+pass=43    pass+o3=43     (  2.3s)
+    bernstein_vazirani n=36  raw=90    pass=89    o3=56    o3+pass=55    pass+o3=55     (  2.5s)
+    bernstein_vazirani n=40  raw=99    pass=98    o3=59    o3+pass=58    pass+o3=58     (  2.7s)
+    bernstein_vazirani n=44  raw=108   pass=107   o3=62    o3+pass=61    pass+o3=61     (  3.0s)
+    bernstein_vazirani n=48  raw=120   pass=119   o3=74    o3+pass=73    pass+o3=73     (  3.3s)
+    bernstein_vazirani n=52  raw=131   pass=130   o3=83    o3+pass=82    pass+o3=82     (  3.7s)
+    bernstein_vazirani n=56  raw=141   pass=140   o3=89    o3+pass=88    pass+o3=88     (  4.1s)
+    bernstein_vazirani n=60  raw=151   pass=150   o3=95    o3+pass=94    pass+o3=94     (  4.3s)
+    bernstein_vazirani n=64  raw=160   pass=159   o3=98    o3+pass=97    pass+o3=97     (  4.5s)
+   repetition_syndrome n=4   raw=9     pass=9     o3=9     o3+pass=9     pass+o3=9      (  4.6s)
+   repetition_syndrome n=8   raw=27    pass=27    o3=27    o3+pass=27    pass+o3=27     (  4.6s)
+   repetition_syndrome n=12  raw=45    pass=45    o3=45    o3+pass=45    pass+o3=45     (  4.6s)
+   repetition_syndrome n=16  raw=63    pass=63    o3=63    o3+pass=63    pass+o3=63     (  4.7s)
+   repetition_syndrome n=20  raw=81    pass=81    o3=81    o3+pass=81    pass+o3=81     (  4.7s)
+   repetition_syndrome n=24  raw=99    pass=99    o3=99    o3+pass=99    pass+o3=99     (  4.8s)
+   repetition_syndrome n=28  raw=117   pass=117   o3=117   o3+pass=117   pass+o3=117    (  4.8s)
+   repetition_syndrome n=32  raw=135   pass=135   o3=135   o3+pass=135   pass+o3=135    (  4.9s)
+   repetition_syndrome n=36  raw=153   pass=153   o3=153   o3+pass=153   pass+o3=153    (  5.0s)
+   repetition_syndrome n=40  raw=171   pass=171   o3=171   o3+pass=171   pass+o3=171    (  5.1s)
+   repetition_syndrome n=44  raw=189   pass=189   o3=189   o3+pass=189   pass+o3=189    (  5.1s)
+   repetition_syndrome n=48  raw=207   pass=207   o3=207   o3+pass=207   pass+o3=207    (  5.3s)
+   repetition_syndrome n=52  raw=225   pass=225   o3=225   o3+pass=225   pass+o3=225    (  5.4s)
+   repetition_syndrome n=56  raw=243   pass=243   o3=243   o3+pass=243   pass+o3=243    (  5.7s)
+   repetition_syndrome n=60  raw=261   pass=261   o3=261   o3+pass=261   pass+o3=261    (  6.1s)
+   repetition_syndrome n=64  raw=279   pass=279   o3=279   o3+pass=279   pass+o3=279    (  6.5s)
+        random_layered n=4   raw=102   pass=58    o3=51    o3+pass=40    pass+o3=41     (  6.9s)
+        random_layered n=8   raw=200   pass=126   o3=112   o3+pass=90    pass+o3=85     (  7.5s)
+        random_layered n=12  raw=298   pass=194   o3=197   o3+pass=168   pass+o3=159    (  8.4s)
+        random_layered n=16  raw=399   pass=265   o3=259   o3+pass=221   pass+o3=199    (  9.3s)
+        random_layered n=20  raw=490   pass=339   o3=331   o3+pass=281   pass+o3=260    ( 10.4s)
+        random_layered n=24  raw=588   pass=381   o3=396   o3+pass=309   pass+o3=302    ( 11.5s)
+        random_layered n=28  raw=684   pass=465   o3=449   o3+pass=368   pass+o3=363    ( 12.8s)
+        random_layered n=32  raw=788   pass=510   o3=495   o3+pass=421   pass+o3=394    ( 14.3s)
+        random_layered n=36  raw=879   pass=588   o3=553   o3+pass=468   pass+o3=445    ( 16.1s)
+        random_layered n=40  raw=974   pass=638   o3=651   o3+pass=534   pass+o3=507    ( 18.3s)
+        random_layered n=44  raw=1084  pass=696   o3=698   o3+pass=570   pass+o3=534    ( 20.2s)
+        random_layered n=48  raw=1180  pass=808   o3=759   o3+pass=636   pass+o3=619    ( 22.7s)
+        random_layered n=52  raw=1277  pass=863   o3=825   o3+pass=696   pass+o3=654    ( 24.8s)
+        random_layered n=56  raw=1373  pass=899   o3=915   o3+pass=750   pass+o3=726    ( 27.1s)
+        random_layered n=60  raw=1482  pass=963   o3=938   o3+pass=775   pass+o3=717    ( 29.4s)
+        random_layered n=64  raw=1579  pass=1037  o3=1051  o3+pass=880   pass+o3=834    ( 32.1s)
+ random_clifford_synth n=4   raw=26    pass=21    o3=28    o3+pass=25    pass+o3=27     ( 32.3s)
+ random_clifford_synth n=8   raw=84    pass=77    o3=85    o3+pass=79    pass+o3=79     ( 32.7s)
+ random_clifford_synth n=12  raw=158   pass=145   o3=175   o3+pass=167   pass+o3=171    ( 33.4s)
+ random_clifford_synth n=16  raw=286   pass=269   o3=323   o3+pass=310   pass+o3=313    ( 34.7s)
+ random_clifford_synth n=20  raw=436   pass=416   o3=491   o3+pass=474   pass+o3=477    ( 35.9s)
+ random_clifford_synth n=24  raw=590   pass=565   o3=659   o3+pass=633   pass+o3=641    ( 37.5s)
+ random_clifford_synth n=28  raw=825   pass=801   o3=917   o3+pass=888   pass+o3=900    ( 39.2s)
+ random_clifford_synth n=32  raw=1034  pass=999   o3=1151  o3+pass=1116  pass+o3=1123   ( 41.3s)
+ random_clifford_synth n=36  raw=1316  pass=1283  o3=1438  o3+pass=1411  pass+o3=1417   ( 44.3s)
+ random_clifford_synth n=40  raw=1586  pass=1549  o3=1743  o3+pass=1706  pass+o3=1718   ( 47.3s)
+ random_clifford_synth n=44  raw=1922  pass=1882  o3=2051  o3+pass=2016  pass+o3=2025   ( 50.6s)
+ random_clifford_synth n=48  raw=2294  pass=2249  o3=2465  o3+pass=2424  pass+o3=2433   ( 54.9s)
+ random_clifford_synth n=52  raw=2669  pass=2614  o3=2847  o3+pass=2788  pass+o3=2803   ( 60.0s)
+ random_clifford_synth n=56  raw=3128  pass=3070  o3=3334  o3+pass=3275  pass+o3=3291   ( 65.3s)
+ random_clifford_synth n=60  raw=3600  pass=3540  o3=3838  o3+pass=3779  pass+o3=3796   ( 70.4s)
+ random_clifford_synth n=64  raw=4032  pass=3967  o3=4256  o3+pass=4190  pass+o3=4205   ( 75.9s)
+                   qft n=4   raw=12    pass=10    o3=10    o3+pass=10    pass+o3=10     ( 76.0s)
+                   qft n=8   raw=40    pass=36    o3=36    o3+pass=36    pass+o3=36     ( 76.2s)
+                   qft n=12  raw=84    pass=78    o3=78    o3+pass=78    pass+o3=78     ( 76.5s)
+                   qft n=16  raw=144   pass=136   o3=136   o3+pass=136   pass+o3=136    ( 77.0s)
+                   qft n=20  raw=220   pass=210   o3=210   o3+pass=210   pass+o3=210    ( 77.7s)
+                   qft n=24  raw=312   pass=300   o3=294   o3+pass=294   pass+o3=294    ( 78.8s)
+                   qft n=28  raw=420   pass=406   o3=378   o3+pass=378   pass+o3=378    ( 79.9s)
+                   qft n=32  raw=544   pass=528   o3=462   o3+pass=462   pass+o3=462    ( 81.1s)
+                   qft n=36  raw=684   pass=666   o3=546   o3+pass=546   pass+o3=546    ( 82.8s)
+                   qft n=40  raw=840   pass=820   o3=630   o3+pass=630   pass+o3=630    ( 84.1s)
+                   qft n=44  raw=1012  pass=990   o3=714   o3+pass=714   pass+o3=714    ( 86.7s)
+                   qft n=48  raw=1200  pass=1176  o3=798   o3+pass=798   pass+o3=798    ( 89.3s)
+                   qft n=52  raw=1404  pass=1378  o3=882   o3+pass=882   pass+o3=882    ( 92.1s)
+                   qft n=56  raw=1624  pass=1596  o3=966   o3+pass=966   pass+o3=966    ( 95.1s)
+                   qft n=60  raw=1860  pass=1830  o3=1050  o3+pass=1050  pass+o3=1050   ( 98.3s)
+                   qft n=64  raw=2112  pass=2080  o3=1134  o3+pass=1134  pass+o3=1134   (101.2s)
+     grover_native_mcz n=4   raw=28    pass=21    o3=81    o3+pass=74    pass+o3=79     (101.6s)
+     grover_native_mcz n=5   raw=35    pass=26    o3=129   o3+pass=143   pass+o3=122    (102.4s)
+     grover_native_mcz n=6   raw=42    pass=31    o3=334   o3+pass=357   pass+o3=332    (104.5s)
+     grover_native_mcz n=7   raw=49    pass=36    o3=487   o3+pass=533   pass+o3=482    (107.0s)
+     grover_native_mcz n=8   raw=56    pass=41    o3=666   o3+pass=735   pass+o3=662    (110.0s)
+     grover_native_mcz n=9   raw=63    pass=46    o3=864   o3+pass=969   pass+o3=859    (114.1s)
+     grover_native_mcz n=10  raw=70    pass=51    o3=1087  o3+pass=1233  pass+o3=1081   (117.8s)
+     grover_clifford_t n=4   raw=120   pass=106   o3=105   o3+pass=102   pass+o3=96     (118.3s)
+     grover_clifford_t n=8   raw=388   pass=358   o3=357   o3+pass=350   pass+o3=324    (119.5s)
+     grover_clifford_t n=12  raw=656   pass=610   o3=609   o3+pass=598   pass+o3=552    (121.1s)
+     grover_clifford_t n=16  raw=924   pass=862   o3=861   o3+pass=846   pass+o3=780    (123.9s)
+     grover_clifford_t n=20  raw=1192  pass=1114  o3=1113  o3+pass=1094  pass+o3=1008   (126.8s)
+     grover_clifford_t n=24  raw=1460  pass=1366  o3=1365  o3+pass=1342  pass+o3=1236   (131.0s)
+     grover_clifford_t n=28  raw=1728  pass=1618  o3=1617  o3+pass=1590  pass+o3=1464   (135.4s)
+     grover_clifford_t n=32  raw=1996  pass=1870  o3=1869  o3+pass=1838  pass+o3=1692   (142.0s)
+     grover_clifford_t n=36  raw=2264  pass=2122  o3=2121  o3+pass=2086  pass+o3=1920   (148.8s)
+     grover_clifford_t n=40  raw=2532  pass=2374  o3=2373  o3+pass=2334  pass+o3=2148   (154.8s)
+     grover_clifford_t n=44  raw=2800  pass=2626  o3=2625  o3+pass=2582  pass+o3=2376   (161.4s)
+     grover_clifford_t n=48  raw=3068  pass=2878  o3=2877  o3+pass=2830  pass+o3=2604   (167.7s)
+     grover_clifford_t n=52  raw=3336  pass=3130  o3=3129  o3+pass=3078  pass+o3=2832   (174.4s)
+     grover_clifford_t n=56  raw=3604  pass=3382  o3=3381  o3+pass=3326  pass+o3=3060   (182.6s)
+     grover_clifford_t n=60  raw=3872  pass=3634  o3=3633  o3+pass=3574  pass+o3=3288   (191.6s)
+     grover_clifford_t n=64  raw=4140  pass=3886  o3=3885  o3+pass=3822  pass+o3=3516   (199.0s)
+                shor15 n=8   raw=70    pass=66    o3=207   o3+pass=207   pass+o3=207    (199.3s)
+                shor15 n=12  raw=118   pass=112   o3=253   o3+pass=253   pass+o3=253    (199.8s)
+                shor15 n=16  raw=182   pass=174   o3=315   o3+pass=315   pass+o3=315    (200.5s)
+
+gates saved vs n (slope, R^2):
+      bernstein_vazirani o3pass_vs_o3   slope= -0.000 R2= 1.000 mean=    1.0
+      bernstein_vazirani pass_vs_raw    slope= -0.000 R2= 1.000 mean=    1.0
+      bernstein_vazirani passo3_vs_o3   slope= -0.000 R2= 1.000 mean=    1.0
+                     ghz o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                     ghz pass_vs_raw    slope=  0.000 R2= 1.000 mean=    0.0
+                     ghz passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+       grover_clifford_t o3pass_vs_o3   slope=  1.000 R2= 0.992 mean=   35.3
+       grover_clifford_t pass_vs_raw    slope=  4.000 R2= 1.000 mean=  134.7
+       grover_clifford_t passo3_vs_o3   slope=  6.000 R2= 1.000 mean=  188.0
+       grover_native_mcz o3pass_vs_o3   slope=-26.691 R2= 0.894 mean=  -61.2
+       grover_native_mcz pass_vs_raw    slope=  2.000 R2= 0.986 mean=   13.3
+       grover_native_mcz passo3_vs_o3   slope=  0.059 R2= 0.006 mean=    4.9
+                     qft o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                     qft pass_vs_raw    slope=  0.500 R2= 1.000 mean=   17.0
+                     qft passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+   random_clifford_synth o3pass_vs_o3   slope=  1.015 R2= 0.962 mean=   31.4
+   random_clifford_synth pass_vs_raw    slope=  0.979 R2= 0.975 mean=   32.0
+   random_clifford_synth passo3_vs_o3   slope=  0.778 R2= 0.957 mean=   23.5
+          random_layered o3pass_vs_o3   slope=  2.670 R2= 0.952 mean=   87.8
+          random_layered pass_vs_raw    slope=  8.111 R2= 0.994 mean=  284.3
+          random_layered passo3_vs_o3   slope=  3.329 R2= 0.961 mean=  111.2
+     repetition_syndrome o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+     repetition_syndrome pass_vs_raw    slope=  0.000 R2= 1.000 mean=    0.0
+     repetition_syndrome passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                  shor15 o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                  shor15 pass_vs_raw    slope=  0.500 R2= 1.000 mean=    6.0
+                  shor15 passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+
+wrote /home/nischalkeshav/CC/sts/.claude/worktrees/code-compiler/results/gate_savings_all[.csv|_regression.csv|_params.json|.png]

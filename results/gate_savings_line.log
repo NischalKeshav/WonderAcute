@@ -83,3 +83,71 @@
                    qft n=12  raw=84    pass=78    o3=137   o3+pass=78    pass+o3=137    (211.3s)
                    qft n=16  raw=144   pass=136   o3=248   o3+pass=136   pass+o3=248    (211.8s)
                    qft n=20  raw=220   pass=210   o3=392   o3+pass=210   pass+o3=392    (212.6s)
+                   qft n=24  raw=312   pass=300   o3=569   o3+pass=294   pass+o3=569    (214.1s)
+                   qft n=28  raw=420   pass=406   o3=776   o3+pass=378   pass+o3=776    (215.9s)
+                   qft n=32  raw=544   pass=528   o3=1000  o3+pass=462   pass+o3=1000   (218.0s)
+                   qft n=36  raw=684   pass=666   o3=1239  o3+pass=546   pass+o3=1239   (219.8s)
+                   qft n=40  raw=840   pass=820   o3=1504  o3+pass=630   pass+o3=1504   (222.6s)
+                   qft n=44  raw=1012  pass=990   o3=1789  o3+pass=714   pass+o3=1789   (225.5s)
+                   qft n=48  raw=1200  pass=1176  o3=2081  o3+pass=798   pass+o3=2081   (229.1s)
+                   qft n=52  raw=1404  pass=1378  o3=2455  o3+pass=882   pass+o3=2455   (232.3s)
+                   qft n=56  raw=1624  pass=1596  o3=2822  o3+pass=966   pass+o3=2822   (237.0s)
+                   qft n=60  raw=1860  pass=1830  o3=3307  o3+pass=1050  pass+o3=3307   (241.6s)
+                   qft n=64  raw=2112  pass=2080  o3=3851  o3+pass=1134  pass+o3=3851   (247.0s)
+     grover_native_mcz n=4   raw=28    pass=21    o3=96    o3+pass=76    pass+o3=92     (247.7s)
+     grover_native_mcz n=5   raw=35    pass=26    o3=158   o3+pass=143   pass+o3=151    (248.7s)
+     grover_native_mcz n=6   raw=42    pass=31    o3=538   o3+pass=466   pass+o3=533    (250.8s)
+     grover_native_mcz n=7   raw=49    pass=36    o3=822   o3+pass=701   pass+o3=815    (253.5s)
+     grover_native_mcz n=8   raw=56    pass=41    o3=1196  o3+pass=1017  pass+o3=1187   (257.9s)
+     grover_native_mcz n=9   raw=63    pass=46    o3=1621  o3+pass=1366  pass+o3=1613   (262.2s)
+     grover_native_mcz n=10  raw=70    pass=51    o3=2074  o3+pass=1735  pass+o3=2061   (267.2s)
+     grover_clifford_t n=4   raw=120   pass=106   o3=120   o3+pass=107   pass+o3=109    (268.0s)
+     grover_clifford_t n=8   raw=388   pass=358   o3=400   o3+pass=355   pass+o3=365    (269.4s)
+     grover_clifford_t n=12  raw=656   pass=610   o3=680   o3+pass=603   pass+o3=621    (271.6s)
+     grover_clifford_t n=16  raw=924   pass=862   o3=960   o3+pass=851   pass+o3=877    (274.3s)
+     grover_clifford_t n=20  raw=1192  pass=1114  o3=1240  o3+pass=1099  pass+o3=1133   (277.5s)
+     grover_clifford_t n=24  raw=1460  pass=1366  o3=1520  o3+pass=1347  pass+o3=1389   (281.5s)
+     grover_clifford_t n=28  raw=1728  pass=1618  o3=1800  o3+pass=1595  pass+o3=1645   (285.4s)
+     grover_clifford_t n=32  raw=1996  pass=1870  o3=2128  o3+pass=1859  pass+o3=1941   (290.0s)
+     grover_clifford_t n=36  raw=2264  pass=2122  o3=2384  o3+pass=2099  pass+o3=2177   (295.2s)
+     grover_clifford_t n=40  raw=2532  pass=2374  o3=2724  o3+pass=2359  pass+o3=2487   (300.8s)
+     grover_clifford_t n=44  raw=2800  pass=2626  o3=3080  o3+pass=2619  pass+o3=2813   (306.8s)
+     grover_clifford_t n=48  raw=3068  pass=2878  o3=3344  o3+pass=2867  pass+o3=3053   (314.1s)
+     grover_clifford_t n=52  raw=3336  pass=3130  o3=3528  o3+pass=3099  pass+o3=3221   (322.2s)
+     grover_clifford_t n=56  raw=3604  pass=3382  o3=3898  o3+pass=3355  pass+o3=3563   (330.2s)
+     grover_clifford_t n=60  raw=3872  pass=3634  o3=4176  o3+pass=3619  pass+o3=3809   (337.9s)
+     grover_clifford_t n=64  raw=4140  pass=3886  o3=4680  o3+pass=3909  pass+o3=4268   (347.3s)
+                shor15 n=8   raw=70    pass=66    o3=263   o3+pass=213   pass+o3=263    (347.7s)
+                shor15 n=12  raw=118   pass=112   o3=347   o3+pass=259   pass+o3=347    (348.3s)
+                shor15 n=16  raw=182   pass=174   o3=463   o3+pass=321   pass+o3=463    (349.3s)
+
+gates saved vs n (slope, R^2):
+      bernstein_vazirani o3pass_vs_o3   slope=  0.990 R2= 0.967 mean=   27.5
+      bernstein_vazirani pass_vs_raw    slope= -0.000 R2= 1.000 mean=    1.0
+      bernstein_vazirani passo3_vs_o3   slope= -0.000 R2= 1.000 mean=    1.0
+                     ghz o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                     ghz pass_vs_raw    slope=  0.000 R2= 1.000 mean=    0.0
+                     ghz passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+       grover_clifford_t o3pass_vs_o3   slope= 11.169 R2= 0.954 mean=  309.6
+       grover_clifford_t pass_vs_raw    slope=  4.000 R2= 1.000 mean=  134.7
+       grover_clifford_t passo3_vs_o3   slope=  6.488 R2= 0.997 mean=  198.1
+       grover_native_mcz o3pass_vs_o3   slope= 55.333 R2= 0.958 mean=  144.6
+       grover_native_mcz pass_vs_raw    slope=  2.000 R2= 0.986 mean=   13.3
+       grover_native_mcz passo3_vs_o3   slope=  1.167 R2= 0.762 mean=    8.0
+                     qft o3pass_vs_o3   slope= 42.632 R2= 0.906 mean=  869.9
+                     qft pass_vs_raw    slope=  0.500 R2= 1.000 mean=   17.0
+                     qft passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+   random_clifford_synth o3pass_vs_o3   slope=259.783 R2= 0.864 mean= 4748.3
+   random_clifford_synth pass_vs_raw    slope=  0.979 R2= 0.975 mean=   32.0
+   random_clifford_synth passo3_vs_o3   slope=  0.787 R2= 0.957 mean=   23.5
+          random_layered o3pass_vs_o3   slope= 71.778 R2= 0.931 mean= 1539.3
+          random_layered pass_vs_raw    slope=  8.111 R2= 0.994 mean=  284.3
+          random_layered passo3_vs_o3   slope=  3.518 R2= 0.688 mean=  116.9
+     repetition_syndrome o3pass_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+     repetition_syndrome pass_vs_raw    slope=  0.000 R2= 1.000 mean=    0.0
+     repetition_syndrome passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+                  shor15 o3pass_vs_o3   slope= 11.500 R2= 0.990 mean=   93.3
+                  shor15 pass_vs_raw    slope=  0.500 R2= 1.000 mean=    6.0
+                  shor15 passo3_vs_o3   slope=  0.000 R2= 1.000 mean=    0.0
+
+wrote /home/nischalkeshav/CC/sts/.claude/worktrees/code-compiler/results/gate_savings_line[.csv|_regression.csv|_params.json|.png]

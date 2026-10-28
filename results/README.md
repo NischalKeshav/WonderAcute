@@ -38,7 +38,7 @@ Readings.
   longer obeys the hardware graph: it is the "free relabeling" assumption of the architecture,
   not a hardware saving. `pass+o3` is the routed, hardware-fair column and tracks the
   all-to-all numbers.
-- CP/RZZ rewrite (`rewrite_cp`, on by default): a pending X on a controlled-phase gate becomes
+- CP/RZZ rewrite (`rewrite_cp`, **off by default**; `--cp-rewrite` turns it on): a pending X on a controlled-phase gate becomes
   CP(−θ) plus a P(θ) on the other qubit instead of a flushed X. On O3 output this *lowers* the
   total-gate saving (Clifford+T Grover: 2 → 1 per qubit; native-MCZ Grover: +3 → −27 per
   qubit, because every CP in the synthesized MCZ gains a P) but *raises* the virtual-Z saving
@@ -77,8 +77,8 @@ costs depth because the memory answers one query at a time.
 Amplitude damping + dephasing after every gate (p1 = 1e-3, p2 = 1e-2) and on every idle qubit
 per tick (p_idle = 2e-3); 1000 shots × 10 seeds; 95 % CI = 1.96 × max(across-seed standard
 error, binomial error of the pooled shots). Rate rationale: Google's 2024 surface-code
-processor (arXiv 2408.13687) reports roughly 3–4 × 10⁻⁴ per one-qubit gate and 3 × 10⁻³ per
-CZ; the values here are about three times worse, a generic near-term setting chosen so that
+processor (arXiv 2408.13687) reports, from memory and still to be confirmed against the paper,
+roughly 3–4 × 10⁻⁴ per one-qubit gate and 3 × 10⁻³ per CZ; the values here are about three times worse, a generic near-term setting chosen so that
 3–5-qubit Grover instances land at informative success probabilities instead of near 0 or 1.
 `noise_idle_sweep.*` varies p_idle from 0 to 8 × 10⁻³ so the conclusion does not rest on one
 guess. Two pairs are compared with identical seeds and shots: raw vs pass, and Qiskit O3 vs

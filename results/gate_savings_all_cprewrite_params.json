@@ -1,0 +1,61 @@
+{
+ "commit": "641fcff",
+ "coupling": "all",
+ "policy": "rewrite",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "quick": false,
+ "basis": [
+  "h",
+  "s",
+  "sdg",
+  "sx",
+  "sxdg",
+  "x",
+  "y",
+  "z",
+  "t",
+  "tdg",
+  "rz",
+  "p",
+  "cx",
+  "cz",
+  "cp",
+  "swap"
+ ],
+ "random_layered": {
+  "probs": {
+   "1q": {
+    "h": 0.25,
+    "s": 0.15,
+    "sdg": 0.1,
+    "x": 0.15,
+    "y": 0.1,
+    "z": 0.15,
+    "sx": 0.1
+   },
+   "2q": {
+    "cx": 0.6,
+    "cz": 0.2,
+    "swap": 0.2
+   },
+   "p2": 0.3
+  },
+  "depth": 32,
+  "note": "fixed depth so gates grow linearly in n; saved/gates is the scale-free statistic"
+ },
+ "grover": {
+  "iterations": 1,
+  "clifford_t_ancillas": "max(0, n-3) clean",
+  "note": "qubit counts of grover_clifford_t are not comparable to grover_native_mcz"
+ },
+ "shor15": "compiled order-aware N=15 circuit (exponents reduced mod ord(a)); not general Shor, cf. Smolin, Smith & Vargo 2013",
+ "notes": [
+  "o3 runs ElidePermutations, so SWAP savings overlap with the baseline",
+  "o3+pass on coupling=line assumes free relabeling; pass+o3 is routed",
+  "control flow (feed-forward) is not supported by the pass"
+ ]
+}

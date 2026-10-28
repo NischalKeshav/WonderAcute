@@ -72,7 +72,7 @@ def baseline(qc: QuantumCircuit, coupling: str = "all", seed: int = 0) -> Quantu
 
 
 def evaluate(qc: QuantumCircuit, coupling: str = "all", seed: int = 0,
-             policy: str = "rewrite", rewrite_cp: bool = True) -> dict[str, Counts]:
+             policy: str = "rewrite", rewrite_cp: bool = False) -> dict[str, Counts]:
     """Counts under every treatment."""
     out = {"raw": count(qc)}
     r = compress(qc, policy, rewrite_cp)
