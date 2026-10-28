@@ -117,42 +117,70 @@ def qft(n: int, swaps: bool = True, measure: bool = False) -> QuantumCircuit:
     return qc
 
 
-def _mcz(qc: QuantumCircuit, qubits: list[int], decompose: bool) -> None:
+def toffoli(qc: QuantumCircuit, a: int, b: int, c: int) -> None:
+    """Exact Clifford+T Toffoli (6 CNOT, 7 T) on controls a, b and target c."""
+    qc.h(c)
+    qc.cx(b, c); qc.tdg(c); qc.cx(a, c); qc.t(c)
+    qc.cx(b, c); qc.tdg(c); qc.cx(a, c); qc.t(b); qc.t(c)
+    qc.h(c)
+    qc.cx(a, b); qc.t(a); qc.tdg(b); qc.cx(a, b)
+
+
+def mcx_vchain(qc: QuantumCircuit, controls: list[int], target: int, ancillas: list[int]) -> None:
+    """Multi-controlled X from a chain of exact Toffolis using len(controls)-2 clean ancillas."""
+    k = len(controls)
+    if k == 0:
+        qc.x(target)
+    elif k == 1:
+        qc.cx(controls[0], target)
+    elif k == 2:
+        toffoli(qc, controls[0], controls[1], target)
+    else:
+        assert len(ancillas) >= k - 2
+        steps = [(controls[0], controls[1], ancillas[0])]
+        steps += [(controls[i], ancillas[i - 2], ancillas[i - 1]) for i in range(2, k - 1)]
+        for a, b, c in steps:
+            toffoli(qc, a, b, c)
+        toffoli(qc, controls[k - 1], ancillas[k - 3], target)
+        for a, b, c in reversed(steps):
+            toffoli(qc, a, b, c)
+
+
+def _mcz(qc: QuantumCircuit, qubits: list[int], ancillas: list[int], decompose: bool) -> None:
     if len(qubits) == 1:
         qc.z(qubits[0])
-        return
-    gate = MCMTGate(ZGate(), len(qubits) - 1, 1)
-    if decompose:
-        sub = QuantumCircuit(len(qubits))
-        sub.append(gate, range(len(qubits)))
-        from qiskit import transpile
-        sub = transpile(sub, basis_gates=["h", "s", "sdg", "t", "tdg", "cx", "x"],
-                        optimization_level=0)
-        qc.compose(sub, qubits, inplace=True)
+    elif decompose:
+        *controls, target = qubits
+        qc.h(target)
+        mcx_vchain(qc, controls, target, ancillas)
+        qc.h(target)
     else:
-        qc.append(gate, qubits)
+        qc.append(MCMTGate(ZGate(), len(qubits) - 1, 1), qubits)
 
 
 def grover(n: int, marked: int, iterations: int | None = None,
            decompose_mcz: bool = False) -> QuantumCircuit:
     """Grover search for one marked n-bit item. The oracle and diffusion are written with
     X conjugations around a multi-controlled Z, the usual textbook form. With
-    ``decompose_mcz`` the MCZ is lowered to Clifford+T; otherwise it is kept as one gate."""
+    ``decompose_mcz`` the MCZ is lowered to exact Clifford+T through a Toffoli v-chain, which
+    adds max(0, n-3) clean ancilla qubits; otherwise the MCZ is kept as one native gate."""
     if iterations is None:
         iterations = max(1, int(math.floor(math.pi / 4 * math.sqrt(2 ** n))))
     qs = list(range(n))
-    qc = QuantumCircuit(n, n)
+    n_anc = max(0, n - 3) if decompose_mcz else 0
+    anc = list(range(n, n + n_anc))
+    qc = QuantumCircuit(n + n_anc, n)
     qc.h(qs)
     for _ in range(iterations):
         zeros = [q for q in qs if not (marked >> q) & 1]
         for q in zeros:
             qc.x(q)
-        _mcz(qc, qs, decompose_mcz)
+        _mcz(qc, qs, anc, decompose_mcz)
         for q in zeros:
             qc.x(q)
         qc.h(qs)
         qc.x(qs)
-        _mcz(qc, qs, decompose_mcz)
+        _mcz(qc, qs, anc, decompose_mcz)
         qc.x(qs)
         qc.h(qs)
     qc.measure(qs, qs)
@@ -165,11 +193,12 @@ def shor15(a: int = 7, n_count: int = 8) -> QuantumCircuit:
     from controlled SWAPs and CNOTs; the inverse QFT includes its SWAP network."""
     if a not in (2, 4, 7, 8, 11, 13):
         raise ValueError("a must be coprime to 15 with a non-trivial order")
+    order = next(r for r in range(1, 5) if pow(a, r, 15) == 1)
 
     def c_amod15(power: int) -> QuantumCircuit:
         u = QuantumCircuit(5)  # qubit 0 = control, 1..4 = work register
         w = [1, 2, 3, 4]
-        for _ in range(power):
+        for _ in range(power % order):  # a^(2^j) mod 15 repeats with period `order`
             if a in (2, 13):
                 u.cswap(0, w[2], w[3]); u.cswap(0, w[1], w[2]); u.cswap(0, w[0], w[1])
             if a in (7, 8):

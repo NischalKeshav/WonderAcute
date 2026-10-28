@@ -1,0 +1,56 @@
+{
+ "commit": "dd86da1",
+ "coupling": "all",
+ "policy": "rewrite",
+ "seeds": [
+  0
+ ],
+ "quick": true,
+ "basis": [
+  "h",
+  "s",
+  "sdg",
+  "sx",
+  "sxdg",
+  "x",
+  "y",
+  "z",
+  "t",
+  "tdg",
+  "rz",
+  "p",
+  "cx",
+  "cz",
+  "cp",
+  "swap"
+ ],
+ "random_layered": {
+  "probs": {
+   "1q": {
+    "h": 0.25,
+    "s": 0.15,
+    "sdg": 0.1,
+    "x": 0.15,
+    "y": 0.1,
+    "z": 0.15,
+    "sx": 0.1
+   },
+   "2q": {
+    "cx": 0.6,
+    "cz": 0.2,
+    "swap": 0.2
+   },
+   "p2": 0.3
+  },
+  "depth": "2n"
+ },
+ "grover": {
+  "iterations": 1,
+  "clifford_t_ancillas": "max(0, n-3) clean"
+ },
+ "notes": [
+  "o3 runs ElidePermutations, so SWAP savings overlap with the baseline",
+  "o3+pass on coupling=line assumes free relabeling; pass+o3 is routed",
+  "control flow (feed-forward) is not supported by the pass"
+ ]
+}

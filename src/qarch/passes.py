@@ -21,7 +21,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from qiskit.circuit import QuantumCircuit
+import numpy as np
+from qiskit.circuit import Instruction, QuantumCircuit
+from qiskit.quantum_info import Operator
 from qiskit.circuit.library import PhaseGate, RZGate, TdgGate, TGate, XGate, YGate, ZGate
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 from qiskit.transpiler.basepasses import TransformationPass
@@ -127,10 +129,41 @@ def compress(circuit: QuantumCircuit, policy: str = "rewrite") -> CompressionRes
             out.append(op, qargs, inst.clbits)
             continue
 
-        result.flushed += _flush(out, table, physical)
+        if is_diagonal(op):
+            # pending Z commutes with any diagonal gate; only the X parts must be flushed
+            for p in physical:
+                if table.x[p]:
+                    out.append(XGate(), [p])
+                    table.x[p] = False
+                    result.flushed += 1
+        else:
+            result.flushed += _flush(out, table, physical)
         out.append(op, qargs, inst.clbits)
 
     return result
+
+
+DIAGONAL_NAMES = {"p", "rz", "t", "tdg", "z", "s", "sdg", "u1", "cp", "cz", "ccz", "cu1",
+                  "crz", "rzz", "mcphase", "mcp", "mcu1"}
+
+
+_diag_cache: dict[tuple, bool] = {}
+
+
+def is_diagonal(op: Instruction) -> bool:
+    """Diagonal in the computational basis: checked by name, else by matrix for <= 8 qubits."""
+    if op.name in DIAGONAL_NAMES:
+        return True
+    if op.num_qubits > 8:
+        return False
+    key = (op.name, repr(op.params), op.num_qubits)
+    if key not in _diag_cache:
+        try:
+            m = Operator(op).data
+            _diag_cache[key] = bool(np.allclose(m - np.diag(np.diag(m)), 0))
+        except Exception:
+            _diag_cache[key] = False
+    return _diag_cache[key]
 
 
 def materialize(result: CompressionResult, include_permutation: bool = True) -> QuantumCircuit:

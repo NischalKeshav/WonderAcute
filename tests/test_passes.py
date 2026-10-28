@@ -114,7 +114,8 @@ def test_known_algorithms_preserve_counts():
     from qarch.verify import counts_with_flips
 
     sim = AerSimulator(seed_simulator=7)
-    for qc in [circuits.bernstein_vazirani(6, seed=3), circuits.grover(4, marked=0b1010)]:
+    for qc in [circuits.bernstein_vazirani(6, seed=3), circuits.grover(4, marked=0b1010),
+               circuits.grover(5, marked=0b10110, decompose_mcz=True)]:
         res = compress(qc)
         a = sim.run(transpile(qc, sim), shots=2000).result().get_counts()
         b = sim.run(transpile(res.circuit, sim), shots=2000).result().get_counts()
@@ -130,3 +131,34 @@ def test_pass_manager_wrapper():
     out = pm.run(qc)
     assert out.size() <= qc.size()
     assert pm.property_set["address_table"] is not None
+
+
+def test_diagonal_gate_keeps_pending_z():
+    from qiskit.circuit.library import MCMTGate, ZGate
+
+    qc = QuantumCircuit(3)
+    qc.z(0)
+    qc.x(1)
+    qc.cp(0.3, 0, 1)
+    qc.append(MCMTGate(ZGate(), 2, 1), [0, 1, 2])
+    qc.rzz(0.7, 1, 2)
+    res = compress(qc)
+    assert res.flushed == 1            # only the X on line 1; the Z stays pending
+    assert res.table.pending(0) == "Z"
+    assert unitary_equivalent(qc, res)
+
+
+def test_exact_toffoli_chain():
+    from qiskit.quantum_info import Statevector
+
+    # The chain needs clean ancillas, so compare on every input with the ancillas in |0>.
+    for k in (2, 3, 4, 5):
+        nq = 2 * k - 1
+        controls, target, anc = list(range(k)), k, list(range(k + 1, nq))
+        qc = QuantumCircuit(nq)
+        circuits.mcx_vchain(qc, controls, target, anc)
+        ref = QuantumCircuit(nq)
+        ref.mcx(controls, target)
+        for b in range(2 ** (k + 1)):
+            psi = Statevector.from_int(b, 2 ** nq)
+            assert psi.evolve(qc).equiv(psi.evolve(ref)), (k, b)
