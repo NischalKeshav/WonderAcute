@@ -47,6 +47,7 @@ def main():
     ap.add_argument("--p1", type=float, default=1e-3)
     ap.add_argument("--p2", type=float, default=1e-2)
     ap.add_argument("--p-idle", type=float, default=2e-3)
+    ap.add_argument("--channel", choices=["both", "dephasing", "damping"], default="both")
     ap.add_argument("--p-idle-sweep", action="store_true",
                     help="sweep the idle rate at unbounded ops per tick instead of sweeping ticks")
     args = ap.parse_args()
@@ -57,7 +58,7 @@ def main():
     if args.p_idle_sweep:
         ticks = [None]
         idle_rates = [0.0, 5e-4, 1e-3, 2e-3, 4e-3, 8e-3]
-    tag = "_idle_sweep" if args.p_idle_sweep else ""
+    tag = ("_idle_sweep" if args.p_idle_sweep else "") + ("" if args.channel == "both" else f"_{args.channel}")
 
     cases = []
     for n in ([3, 4] if args.quick else [3, 4, 5]):
@@ -80,7 +81,7 @@ def main():
                     "pass+o3": (baseline(res.circuit, seed=0), res)}
         for variant, (circ, cres) in variants.items():
           for p_idle in idle_rates:
-            nm = noise_model(args.p1, args.p2, p_idle)
+            nm = noise_model(args.p1, args.p2, p_idle, args.channel)
             for opt in ticks:
                 sched = with_idle(circ, opt)
                 n_ticks = sched.depth(lambda i: i.operation.name != "measure")
@@ -101,7 +102,8 @@ def main():
                              "ticks": n_ticks, "gates": circ.size() - qc.num_clbits,
                              "p_success": round(float(ps.mean()), 4), "ci95": round(float(half), 4),
                              "shots": shots, "seeds": len(ps),
-                             "p1": args.p1, "p2": args.p2, "p_idle": p_idle})
+                             "p1": args.p1, "p2": args.p2, "p_idle": p_idle,
+                             "channel": args.channel})
                 print(f"{name:>10} {variant:>10} ops/tick={str(opt):>4} p_idle={p_idle:<6} "
                       f"ticks={n_ticks:<5} p={ps.mean():.3f} ±{half:.3f}")
 

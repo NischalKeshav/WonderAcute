@@ -97,9 +97,17 @@ The compressed circuit succeeds more often in every pair, against the raw circui
 Qiskit's O3; the gap is similar at one operation per tick (Grover-4 raw: 0.080 → 0.136). The
 idle sweep (`noise_idle_sweep.*`, O3 vs pass + O3, unbounded ops per tick) shows the advantage
 growing with the idle rate: Grover-4 0.295 → 0.344 at p_idle = 0 and 0.046 → 0.087 at 8e-3;
-BV-10 0.925 → 0.937 at 0 and 0.684 → 0.857 at 8e-3. BV is the clean illustration of the
-whitepaper's clock argument: absorbing the ancilla's single X removes a whole tick during
-which the other ten qubits were idling. Packing more operations into a tick always helps in
+BV-10 0.925 → 0.937 at 0 and 0.684 → 0.857 at 8e-3.
+
+Where the BV-10 gain comes from (diagnostic at p_idle = 8e-3, O3 → pass+O3): re-inserting
+the saved tick as an all-qubit identity gives 0.815, so the tick accounts for ~4 points; with
+dephasing only the pair is 0.906 → 0.929, with amplitude damping only 0.745 → 0.915. Most of
+the gap is therefore a **T1 asymmetry**: in the compressed circuit the answer lives in the
+classical frame and the physical control qubits wait for readout in |0⟩, which amplitude
+damping cannot touch, while in the O3 circuit the controls holding a 1 sit in |1⟩ and decay.
+This is a real property of frame tracking under biased noise, but it is specific to amplitude
+damping and to a model without readout error; `noise.py --channel dephasing|damping` separates
+the two. Packing more operations into a tick always helps in
 this model because it has no crosstalk term; the "best number of operations per tick" asked
 for in the plan needs a crosstalk penalty, which is future work.
 

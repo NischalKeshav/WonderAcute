@@ -58,8 +58,15 @@ def with_idle(qc: QuantumCircuit, ops_per_tick: int | None) -> QuantumCircuit:
     return out
 
 
-def noise_model(p1: float, p2: float, p_idle: float) -> NoiseModel:
+def noise_model(p1: float, p2: float, p_idle: float, channel: str = "both") -> NoiseModel:
+    """``channel``: "both" (amplitude damping then dephasing), "dephasing" or "damping" only.
+    Separating them matters: a Pauli frame keeps the physical register in |0> while the
+    answer lives in classical bits, and amplitude damping cannot touch |0>."""
     def chan(p):
+        if channel == "dephasing":
+            return phase_damping_error(p)
+        if channel == "damping":
+            return amplitude_damping_error(p)
         return amplitude_damping_error(p).compose(phase_damping_error(p))
 
     nm = NoiseModel(basis_gates=ONE_Q + TWO_Q + ["id"])
