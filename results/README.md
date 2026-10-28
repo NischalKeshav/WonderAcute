@@ -69,8 +69,30 @@ costs depth because the memory answers one query at a time.
 ## Step 6 — noise (`noise.*`)
 
 Amplitude damping + dephasing after every gate (p1 = 1e-3, p2 = 1e-2) and on every idle qubit
-per tick (2e-3), 1000 shots per seed. Quick run (3 seeds), unbounded ops per tick:
-Grover-3 success 0.634 → 0.690, Grover-4 0.127 → 0.195 (compressed higher, CIs disjoint),
-BV-6 0.959 → 0.962 (no difference). Packing more operations into a tick always helps in this
-model because it has no crosstalk term; a tick-count optimum needs a crosstalk model, which
-is future work.
+per tick (p_idle = 2e-3); 1000 shots × 10 seeds; 95 % CI = 1.96 × max(across-seed standard
+error, binomial error of the pooled shots). Rate rationale: Google's 2024 surface-code
+processor (arXiv 2408.13687) reports roughly 3–4 × 10⁻⁴ per one-qubit gate and 3 × 10⁻³ per
+CZ; the values here are about three times worse, a generic near-term setting chosen so that
+3–5-qubit Grover instances land at informative success probabilities instead of near 0 or 1.
+`noise_idle_sweep.*` varies p_idle from 0 to 8 × 10⁻³ so the conclusion does not rest on one
+guess. Two pairs are compared with identical seeds and shots: raw vs pass, and Qiskit O3 vs
+pass followed by O3 (the step-3 baseline). Success probability, original → compressed,
+unbounded ops per tick (clock ticks in brackets):
+
+| circuit | original | compressed |
+|---|---|---|
+| Grover n=3 (2 iterations) | 0.621 ± 0.011 (57) | 0.680 ± 0.012 (53) |
+| Grover n=4 (3 iterations) | 0.131 ± 0.007 (193) | 0.197 ± 0.009 (187) |
+| Grover n=5 (4 iterations) | 0.021 ± 0.004 (417) | 0.047 ± 0.004 (409) |
+| Bernstein–Vazirani n=6 | 0.955 ± 0.004 (6) | 0.966 ± 0.004 (5) |
+| Bernstein–Vazirani n=10 | 0.853 (10) | 0.916 (9) |
+
+The compressed circuit succeeds more often in every case; the gap is similar at one operation
+per tick (Grover-4: 0.080 → 0.136). Packing more operations into a tick always helps in this
+model because it has no crosstalk term; the "best number of operations per tick" asked for in
+the plan needs a crosstalk penalty, which is future work.
+
+`shared_oracle_noise.*` repeats the step-5 comparison under this noise model at N = 8 with the
+table-lookup oracle (the bucket brigade's 35 qubits are out of statevector range), k = 1…3
+instances, sweeping the idle rate: in the shared design the queued instances take idle error
+while they wait. See the CSV for the numbers.
