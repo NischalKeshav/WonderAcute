@@ -10,8 +10,8 @@ instances wait in a queue while the others are served, and the idle channel acts
 every tick they wait. Everything is lowered to Clifford+T so the step-6 noise model applies.
 
 Qubits: duplicated 6k, shared 3k + 3 (N = 8: 3 address, 1 output, 2 ancillas). Success is the
-probability that an instance reads the marked item (mean over instances), with 95% CIs across
-seeds. The idle rate is swept because it is what decides the answer. Writes
+probability that an instance reads the marked item (mean over instances), 1000 shots x 5 seeds,
+95% CI = 1.96 x max(seed standard error, binomial error). The idle rate is swept because it is what decides the answer. Writes
 results/shared_oracle_noise.csv and .png.
 """
 
@@ -76,8 +76,8 @@ def main():
     ap.add_argument("--p2", type=float, default=1e-2)
     args = ap.parse_args()
     shots = 1000
-    seeds = range(3 if args.quick else 10)
-    idle_rates = [0.0, 1e-3, 3e-3] if args.quick else [0.0, 5e-4, 1e-3, 2e-3, 4e-3, 8e-3]
+    seeds = range(2 if args.quick else 5)
+    idle_rates = [0.0, 2e-3] if args.quick else [0.0, 1e-3, 2e-3, 4e-3]
     ks = [1, 2, 3]
     marked = 5
     basis = ONE_Q + TWO_Q + ["id", "measure"]
@@ -92,7 +92,11 @@ def main():
                 nm = noise_model(args.p1, args.p2, p_idle)
                 per_seed = []
                 for seed in seeds:
-                    sim = AerSimulator(noise_model=nm, seed_simulator=seed)
+                    # disjoint instances factorise, so MPS is ~7x faster for the duplicated
+                    # design; the 12-qubit shared circuits are fastest as a statevector
+                    sim = AerSimulator(noise_model=nm, seed_simulator=seed,
+                                       method="matrix_product_state" if design == "duplicated"
+                                       else "statevector")
                     counts = sim.run(circ, shots=shots).result().get_counts()
                     hits = np.zeros(k)
                     for key, v in counts.items():

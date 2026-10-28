@@ -1,7 +1,8 @@
 {
- "commit": "641fcff",
+ "commit": "be3295f",
  "coupling": "all",
  "policy": "rewrite",
+ "rewrite_cp": false,
  "seeds": [
   0,
   1,

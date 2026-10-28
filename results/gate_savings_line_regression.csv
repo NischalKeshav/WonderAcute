@@ -30,9 +30,9 @@ ghz,passo3_vs_o3,gates,0.0,1.0,0.0
 ghz,passo3_vs_o3,gates_vz,0.0,1.0,0.0
 ghz,passo3_vs_o3,two_qubit,0.0,1.0,0.0
 grover_clifford_t,o3pass_vs_o3,cx_equiv,30.5059,0.9454,822.75
-grover_clifford_t,o3pass_vs_o3,depth,11.0167,0.9608,310.54
-grover_clifford_t,o3pass_vs_o3,gates,11.1686,0.9543,309.58
-grover_clifford_t,o3pass_vs_o3,gates_vz,17.1686,0.9801,496.58
+grover_clifford_t,o3pass_vs_o3,depth,12.0167,0.9668,340.21
+grover_clifford_t,o3pass_vs_o3,gates,12.1686,0.9612,340.25
+grover_clifford_t,o3pass_vs_o3,gates_vz,12.1686,0.9612,340.25
 grover_clifford_t,o3pass_vs_o3,two_qubit,10.1686,0.9454,274.25
 grover_clifford_t,pass_vs_raw,cx_equiv,0.0,1.0,0.0
 grover_clifford_t,pass_vs_raw,depth,-0.0,0.0,3.33
@@ -45,9 +45,9 @@ grover_clifford_t,passo3_vs_o3,gates,6.4876,0.9972,198.06
 grover_clifford_t,passo3_vs_o3,gates_vz,7.0,0.9999,218.33
 grover_clifford_t,passo3_vs_o3,two_qubit,0.0,1.0,0.0
 grover_native_mcz,o3pass_vs_o3,cx_equiv,148.75,0.9649,393.43
-grover_native_mcz,o3pass_vs_o3,depth,42.9762,0.9745,121.57
-grover_native_mcz,o3pass_vs_o3,gates,55.3333,0.9577,144.57
-grover_native_mcz,o3pass_vs_o3,gates_vz,81.4167,0.9829,228.14
+grover_native_mcz,o3pass_vs_o3,depth,42.0952,0.9798,123.29
+grover_native_mcz,o3pass_vs_o3,gates,58.4762,0.9682,161.19
+grover_native_mcz,o3pass_vs_o3,gates_vz,58.4762,0.9682,161.19
 grover_native_mcz,o3pass_vs_o3,two_qubit,49.5833,0.9649,131.14
 grover_native_mcz,pass_vs_raw,cx_equiv,0.0,1.0,0.0
 grover_native_mcz,pass_vs_raw,depth,-0.0,1.0,2.0

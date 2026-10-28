@@ -85,18 +85,23 @@ guess. Two pairs are compared with identical seeds and shots: raw vs pass, and Q
 pass followed by O3 (the step-3 baseline). Success probability, original → compressed,
 unbounded ops per tick (clock ticks in brackets):
 
-| circuit | original | compressed |
-|---|---|---|
-| Grover n=3 (2 iterations) | 0.621 ± 0.011 (57) | 0.680 ± 0.012 (53) |
-| Grover n=4 (3 iterations) | 0.131 ± 0.007 (193) | 0.197 ± 0.009 (187) |
-| Grover n=5 (4 iterations) | 0.021 ± 0.004 (417) | 0.047 ± 0.004 (409) |
-| Bernstein–Vazirani n=6 | 0.955 ± 0.004 (6) | 0.966 ± 0.004 (5) |
-| Bernstein–Vazirani n=10 | 0.853 (10) | 0.916 (9) |
+| circuit | raw | pass | O3 | pass + O3 |
+|---|---|---|---|---|
+| Grover n=3 (2 iterations) | 0.621 ± 0.011 (57) | 0.680 ± 0.012 (53) | 0.661 ± 0.011 (49) | 0.706 ± 0.012 (47) |
+| Grover n=4 (3 iterations) | 0.131 ± 0.007 (193) | 0.197 ± 0.009 (187) | 0.153 ± 0.008 (188) | 0.215 ± 0.008 (190) |
+| Grover n=5 (4 iterations) | 0.021 ± 0.004 (417) | 0.047 ± 0.004 (409) | 0.024 ± 0.003 (425) | 0.049 ± 0.005 (413) |
+| Bernstein–Vazirani n=6 | 0.955 ± 0.004 (6) | 0.966 ± 0.004 (5) | 0.957 ± 0.004 (6) | 0.968 ± 0.004 (5) |
+| Bernstein–Vazirani n=10 | 0.853 ± 0.007 (10) | 0.916 ± 0.005 (9) | 0.852 ± 0.007 (10) | 0.915 ± 0.005 (9) |
 
-The compressed circuit succeeds more often in every case; the gap is similar at one operation
-per tick (Grover-4: 0.080 → 0.136). Packing more operations into a tick always helps in this
-model because it has no crosstalk term; the "best number of operations per tick" asked for in
-the plan needs a crosstalk penalty, which is future work.
+The compressed circuit succeeds more often in every pair, against the raw circuit and against
+Qiskit's O3; the gap is similar at one operation per tick (Grover-4 raw: 0.080 → 0.136). The
+idle sweep (`noise_idle_sweep.*`, O3 vs pass + O3, unbounded ops per tick) shows the advantage
+growing with the idle rate: Grover-4 0.295 → 0.344 at p_idle = 0 and 0.046 → 0.087 at 8e-3;
+BV-10 0.925 → 0.937 at 0 and 0.684 → 0.857 at 8e-3. BV is the clean illustration of the
+whitepaper's clock argument: absorbing the ancilla's single X removes a whole tick during
+which the other ten qubits were idling. Packing more operations into a tick always helps in
+this model because it has no crosstalk term; the "best number of operations per tick" asked
+for in the plan needs a crosstalk penalty, which is future work.
 
 `shared_oracle_noise.*` repeats the step-5 comparison under this noise model at N = 8 with the
 table-lookup oracle (the bucket brigade's 35 qubits are out of statevector range), k = 1…3
