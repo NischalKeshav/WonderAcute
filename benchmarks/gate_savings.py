@@ -28,11 +28,14 @@ from qarch.metrics import TREATMENTS, evaluate, rows  # noqa: E402
 RESULTS = Path(__file__).resolve().parents[1] / "results"
 
 # family -> (builder(n, seed), needs seeds?)
+# Fixed depth so the gate count, and hence the saving, is linear in n (depth = 2n made it quadratic).
+LAYER_DEPTH = 32
+
 CLIFFORD_FAMILIES = {
     "ghz": (lambda n, s: circuits.ghz(n), False),
     "bernstein_vazirani": (lambda n, s: circuits.bernstein_vazirani(n - 1, s), True),
     "repetition_syndrome": (lambda n, s: circuits.repetition_syndrome((n + 1) // 2, rounds=3), False),
-    "random_layered": (lambda n, s: circuits.random_layered(n, depth=2 * n, seed=s), True),
+    "random_layered": (lambda n, s: circuits.random_layered(n, depth=LAYER_DEPTH, seed=s), True),
     "random_clifford_synth": (lambda n, s: circuits.random_clifford_synth(n, s), True),
 }
 BEYOND_CLIFFORD = {
@@ -91,12 +94,16 @@ def main():
         commit = "unknown"
     params = {"commit": commit, "coupling": args.coupling, "policy": args.policy,
               "seeds": seeds, "quick": args.quick, "basis": __import__("qarch.metrics").metrics.BASIS,
-              "random_layered": {"probs": circuits.DEFAULT_LAYER_PROBS, "depth": "2n"},
-              "grover": {"iterations": 1, "clifford_t_ancillas": "max(0, n-3) clean"},
+              "random_layered": {"probs": circuits.DEFAULT_LAYER_PROBS, "depth": LAYER_DEPTH,
+                                 "note": "fixed depth so gates grow linearly in n; saved/gates is the scale-free statistic"},
+              "grover": {"iterations": 1, "clifford_t_ancillas": "max(0, n-3) clean",
+                         "note": "qubit counts of grover_clifford_t are not comparable to grover_native_mcz"},
+              "shor15": "compiled order-aware N=15 circuit (exponents reduced mod ord(a)); not general Shor, "
+                        "cf. Smolin, Smith & Vargo 2013",
               "notes": ["o3 runs ElidePermutations, so SWAP savings overlap with the baseline",
                         "o3+pass on coupling=line assumes free relabeling; pass+o3 is routed",
                         "control flow (feed-forward) is not supported by the pass"]}
-    (RESULTS / "gate_savings_params.json").write_text(json.dumps(params, indent=1))
+    (RESULTS / f"gate_savings_{args.coupling}_params.json").write_text(json.dumps(params, indent=1))
 
     for family, build, seeded, ns in plan:
         for n in ns:
@@ -109,7 +116,7 @@ def main():
                   + f"  ({time.time() - t0:5.1f}s)")
 
     fields = list(all_rows[0].keys())
-    with open(RESULTS / "gate_savings.csv", "w", newline="") as f:
+    with open(RESULTS / f"gate_savings_{args.coupling}.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(all_rows)
@@ -131,7 +138,7 @@ def main():
         reg_rows.append({"family": fam, "comparison": label, "metric": metric,
                          "slope": round(slope, 4), "r2": round(r2, 4),
                          "mean_saved": round(float(np.mean(saved)), 2)})
-    with open(RESULTS / "gate_savings_regression.csv", "w", newline="") as f:
+    with open(RESULTS / f"gate_savings_{args.coupling}_regression.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(reg_rows[0].keys()))
         w.writeheader()
         w.writerows(reg_rows)
@@ -142,10 +149,10 @@ def main():
             print(f"  {r['family']:>22} {r['comparison']:<14} slope={r['slope']:7.3f} "
                   f"R2={r['r2']:6.3f} mean={r['mean_saved']:7.1f}")
 
-    plot(all_rows)
+    plot(all_rows, args.coupling)
 
 
-def plot(all_rows):
+def plot(all_rows, coupling):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -169,8 +176,10 @@ def plot(all_rows):
         ax.grid(alpha=0.3)
     axes[0].legend(fontsize=8)
     fig.tight_layout()
-    fig.savefig(RESULTS / "gate_savings.png", dpi=150)
-    print(f"\nwrote {RESULTS / 'gate_savings.csv'}, gate_savings_regression.csv, gate_savings.png")
+    fig.suptitle(f"coupling = {coupling}; shor15 is a compiled order-aware N=15 circuit, not general Shor; "
+                 "grover_clifford_t uses n-3 ancillas", fontsize=8)
+    fig.savefig(RESULTS / f"gate_savings_{coupling}.png", dpi=150)
+    print(f"\nwrote {RESULTS}/gate_savings_{coupling}[.csv|_regression.csv|_params.json|.png]")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,13 @@
 {
- "commit": "dd86da1",
- "coupling": "all",
+ "commit": "c8c7404",
+ "coupling": "line",
  "policy": "rewrite",
  "seeds": [
-  0
+  0,
+  1,
+  2
  ],
- "quick": true,
+ "quick": false,
  "basis": [
   "h",
   "s",
@@ -42,12 +44,15 @@
    },
    "p2": 0.3
   },
-  "depth": "2n"
+  "depth": 32,
+  "note": "fixed depth so gates grow linearly in n; saved/gates is the scale-free statistic"
  },
  "grover": {
   "iterations": 1,
-  "clifford_t_ancillas": "max(0, n-3) clean"
+  "clifford_t_ancillas": "max(0, n-3) clean",
+  "note": "qubit counts of grover_clifford_t are not comparable to grover_native_mcz"
  },
+ "shor15": "compiled order-aware N=15 circuit (exponents reduced mod ord(a)); not general Shor, cf. Smolin, Smith & Vargo 2013",
  "notes": [
   "o3 runs ElidePermutations, so SWAP savings overlap with the baseline",
   "o3+pass on coupling=line assumes free relabeling; pass+o3 is routed",
