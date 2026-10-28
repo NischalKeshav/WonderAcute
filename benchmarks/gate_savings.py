@@ -130,7 +130,7 @@ def main():
     for (fam, n, seed), tr in by.items():
         for label, a, b in (("pass_vs_raw", "pass", "raw"), ("o3pass_vs_o3", "o3+pass", "o3"),
                             ("passo3_vs_o3", "pass+o3", "o3")):
-            for metric in ("gates", "two_qubit", "cx_equiv", "depth"):
+            for metric in ("gates", "gates_vz", "two_qubit", "cx_equiv", "depth"):
                 summary.setdefault((fam, label, metric), []).append((n, tr[b][metric] - tr[a][metric]))
     for (fam, label, metric), pts in sorted(summary.items()):
         ns, saved = zip(*pts)

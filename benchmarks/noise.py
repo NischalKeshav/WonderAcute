@@ -6,8 +6,8 @@ across the number of operations packed into one clock tick.
 Circuits: Grover (n = 3, 4, 5, one marked item, full iteration count, MCZ as Clifford+T) and
 Bernstein–Vazirani (n = 6, 10). Noise: amplitude damping + dephasing after every gate and on
 every idle qubit per tick (qarch.noise). Compressed circuits get their classical bit flips
-applied before scoring. >= 1000 shots per configuration, several seeds, 95% CI from the
-across-seed spread (t-interval). Writes results/noise.csv and results/noise.png.
+applied before scoring. >= 1000 shots per configuration, several seeds, 95% CI = 1.96 x max(across-seed
+standard error, binomial error of the pooled shots). Writes results/noise.csv and results/noise.png.
 """
 
 from __future__ import annotations
@@ -76,7 +76,10 @@ def main():
                         counts = counts_with_flips(counts, cres, qc.num_clbits)
                     ps.append(success(counts, target, qc.num_clbits))
                 ps = np.array(ps)
-                half = 1.96 * ps.std(ddof=1) / np.sqrt(len(ps)) if len(ps) > 1 else float("nan")
+                # across-seed spread, floored at the binomial error of the pooled shots
+                m = float(ps.mean())
+                sem = ps.std(ddof=1) / np.sqrt(len(ps)) if len(ps) > 1 else 0.0
+                half = 1.96 * max(sem, np.sqrt(m * (1 - m) / (shots * len(ps))))
                 rows.append({"circuit": name, "variant": variant,
                              "ops_per_tick": opt if opt is not None else "unbounded",
                              "ticks": n_ticks, "gates": circ.size() - qc.num_clbits,

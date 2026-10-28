@@ -162,3 +162,23 @@ def test_exact_toffoli_chain():
         for b in range(2 ** (k + 1)):
             psi = Statevector.from_int(b, 2 ** nq)
             assert psi.evolve(qc).equiv(psi.evolve(ref)), (k, b)
+
+
+@pytest.mark.parametrize("pattern", ["a", "b", "ab"])
+def test_cp_and_rzz_rewrite_under_pending_x(pattern):
+    qc = QuantumCircuit(2)
+    if "a" in pattern:
+        qc.x(0)
+    if "b" in pattern:
+        qc.x(1)
+    qc.cp(0.7, 0, 1)
+    qc.rzz(0.4, 0, 1)
+    qc.h(0)
+    qc.cp(1.3, 1, 0)
+    res = compress(qc, "rewrite")
+    assert res.rewritten_2q >= 2
+    assert res.flushed == 0
+    assert unitary_equivalent(qc, res)
+    res_f = compress(qc, "flush")
+    assert res_f.rewritten_2q == 0 and res_f.flushed >= 1
+    assert unitary_equivalent(qc, res_f)

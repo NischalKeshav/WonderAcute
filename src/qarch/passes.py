@@ -24,7 +24,8 @@ from dataclasses import dataclass, field
 import numpy as np
 from qiskit.circuit import Instruction, QuantumCircuit
 from qiskit.quantum_info import Operator
-from qiskit.circuit.library import PhaseGate, RZGate, TdgGate, TGate, XGate, YGate, ZGate
+from qiskit.circuit.library import (CPhaseGate, PhaseGate, RZGate, RZZGate, TdgGate, TGate,
+                                    XGate, YGate, ZGate)
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 from qiskit.transpiler.basepasses import TransformationPass
 
@@ -43,6 +44,7 @@ class CompressionResult:
     measurements: list[tuple[int, int, bool]] = field(default_factory=list)
     removed: dict[str, int] = field(default_factory=dict)
     flushed: int = 0  # Pauli gates that had to be emitted before non-Clifford gates
+    rewritten_2q: int = 0  # CP/RZZ gates rewritten under a pending X (adds a P gate for CP)
 
     @property
     def clbit_flips(self) -> dict[int, bool]:
@@ -128,6 +130,27 @@ def compress(circuit: QuantumCircuit, policy: str = "rewrite") -> CompressionRes
                 result.flushed += 1
             out.append(op, qargs, inst.clbits)
             continue
+
+        if policy == "rewrite" and name in ("cp", "cu1", "rzz") and len(physical) == 2:
+            a, b = physical
+            xa, xb = bool(table.x[a]), bool(table.x[b])
+            theta = op.params[0]
+            if xa or xb:
+                if name == "rzz":
+                    # X_a RZZ(t) X_a = RZZ(-t); X on both leaves it unchanged
+                    out.append(RZZGate(theta if (xa and xb) else -theta), qargs)
+                elif xa and xb:
+                    # X_a X_b CP(t) X_a X_b = e^{it} P_a(-t) P_b(-t) CP(t)
+                    out.append(PhaseGate(-theta), [out.qubits[a]])
+                    out.append(PhaseGate(-theta), [out.qubits[b]])
+                    out.append(CPhaseGate(theta), qargs)
+                else:
+                    # X_a CP(t) X_a = CP(-t) P_b(t)   (proofs/formal-model.md section 7)
+                    other = b if xa else a
+                    out.append(CPhaseGate(-theta), qargs)
+                    out.append(PhaseGate(theta), [out.qubits[other]])
+                result.rewritten_2q += 1
+                continue
 
         if is_diagonal(op):
             # pending Z commutes with any diagonal gate; only the X parts must be flushed

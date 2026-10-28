@@ -15,6 +15,8 @@ Disclosures.
   removes routing SWAPs by relabeling, so its output no longer obeys the line: it assumes the
   controller can retarget lines for free (the architecture's premise). ``pass+o3`` compresses
   first and routes afterwards, so its output is a valid line circuit.
+* ``gates_vz`` leaves out diagonal one-qubit gates (rz, p, z, s, t, ...), which virtual-Z
+  hardware applies as frame updates; it is the count that matters for the CP rewrite.
 * ``two_qubit`` counts every gate on two or more qubits as one. ``cx_equiv`` counts a SWAP as
   three CNOTs (the convention of the research plan and the proofs' caveat 2); other multi-qubit
   gates still count as one, so for circuits with a native MCZ compare the decomposed columns.
@@ -33,6 +35,8 @@ from .passes import compress
 BASIS = ["h", "s", "sdg", "sx", "sxdg", "x", "y", "z", "t", "tdg", "rz", "p",
          "cx", "cz", "cp", "swap"]
 TREATMENTS = ("raw", "pass", "o3", "o3+pass", "pass+o3")
+# Diagonal one-qubit gates are implemented as frame updates on virtual-Z hardware (McKay 2017).
+VZ_FREE = {"rz", "p", "u1", "z", "s", "sdg", "t", "tdg"}
 
 
 @dataclass
@@ -42,6 +46,7 @@ class Counts:
     cx_equiv: int
     depth: int
     qubits: int
+    gates_vz: int = 0  # gates that are not free on virtual-Z hardware (diagonal 1q gates are free)
     absorbed: int = 0
     flushed: int = 0
 
@@ -56,6 +61,7 @@ def count(qc: QuantumCircuit) -> Counts:
         cx_equiv=sum(3 if i.operation.name == "swap" else 1 for i in multi),
         depth=body.depth(lambda i: i.operation.name not in ("barrier", "delay")),
         qubits=qc.num_qubits,
+        gates_vz=sum(1 for i in ops if i.operation.name not in VZ_FREE),
     )
 
 
