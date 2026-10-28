@@ -182,3 +182,6 @@ def test_cp_and_rzz_rewrite_under_pending_x(pattern):
     res_f = compress(qc, "flush")
     assert res_f.rewritten_2q == 0 and res_f.flushed >= 1
     assert unitary_equivalent(qc, res_f)
+    res_n = compress(qc, "rewrite", rewrite_cp=False)
+    assert res_n.rewritten_2q == 0 and res_n.flushed >= 1
+    assert unitary_equivalent(qc, res_n)

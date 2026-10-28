@@ -72,16 +72,16 @@ def baseline(qc: QuantumCircuit, coupling: str = "all", seed: int = 0) -> Quantu
 
 
 def evaluate(qc: QuantumCircuit, coupling: str = "all", seed: int = 0,
-             policy: str = "rewrite") -> dict[str, Counts]:
+             policy: str = "rewrite", rewrite_cp: bool = True) -> dict[str, Counts]:
     """Counts under every treatment."""
     out = {"raw": count(qc)}
-    r = compress(qc, policy)
+    r = compress(qc, policy, rewrite_cp)
     out["pass"] = count(r.circuit)
     out["pass"].absorbed = sum(r.removed.values())
     out["pass"].flushed = r.flushed
     o3 = baseline(qc, coupling, seed)
     out["o3"] = count(o3)
-    r3 = compress(o3, policy)
+    r3 = compress(o3, policy, rewrite_cp)
     out["o3+pass"] = count(r3.circuit)
     out["o3+pass"].absorbed = sum(r3.removed.values())
     out["o3+pass"].flushed = r3.flushed

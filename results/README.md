@@ -38,6 +38,12 @@ Readings.
   longer obeys the hardware graph: it is the "free relabeling" assumption of the architecture,
   not a hardware saving. `pass+o3` is the routed, hardware-fair column and tracks the
   all-to-all numbers.
+- CP/RZZ rewrite (`rewrite_cp`, on by default): a pending X on a controlled-phase gate becomes
+  CP(−θ) plus a P(θ) on the other qubit instead of a flushed X. On O3 output this *lowers* the
+  total-gate saving (Clifford+T Grover: 2 → 1 per qubit; native-MCZ Grover: +3 → −27 per
+  qubit, because every CP in the synthesized MCZ gains a P) but *raises* the virtual-Z saving
+  (`gates_vz`, diagonal one-qubit gates free: 7 and +26 per qubit). It is the right choice on
+  virtual-Z hardware and the wrong one when every gate costs; QFT and Shor are unaffected.
 - Grover with a native multi-controlled Z is reported for n ≤ 10 only and is noisy on top of
   O3 (O3 resynthesizes the MCZ differently at each n). Its qubit counts are not comparable to
   the Clifford+T variant, which uses n − 3 clean ancillas.

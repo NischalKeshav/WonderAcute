@@ -66,7 +66,11 @@ def _flush(out: QuantumCircuit, table: AddressTable, physical: list[int]) -> int
     return n
 
 
-def compress(circuit: QuantumCircuit, policy: str = "rewrite") -> CompressionResult:
+def compress(circuit: QuantumCircuit, policy: str = "rewrite",
+             rewrite_cp: bool = True) -> CompressionResult:
+    """``rewrite_cp`` applies the CP/RZZ rewrite under policy "rewrite". It trades one flushed X
+    for one extra P gate, which is free on virtual-Z hardware and a cost otherwise; compare the
+    ``gates`` and ``gates_vz`` metrics."""
     if policy not in POLICIES:
         raise ValueError(f"policy must be one of {POLICIES}")
     qindex = {q: i for i, q in enumerate(circuit.qubits)}
@@ -131,7 +135,7 @@ def compress(circuit: QuantumCircuit, policy: str = "rewrite") -> CompressionRes
             out.append(op, qargs, inst.clbits)
             continue
 
-        if policy == "rewrite" and name in ("cp", "cu1", "rzz") and len(physical) == 2:
+        if policy == "rewrite" and rewrite_cp and name in ("cp", "cu1", "rzz") and len(physical) == 2:
             a, b = physical
             xa, xb = bool(table.x[a]), bool(table.x[b])
             theta = op.params[0]
@@ -216,12 +220,13 @@ class AddressTablePass(TransformationPass):
     """Qiskit pass wrapper. Stores the final table in ``property_set['address_table']`` and the
     per-measurement flips in ``property_set['measurement_flips']``."""
 
-    def __init__(self, policy: str = "rewrite"):
+    def __init__(self, policy: str = "rewrite", rewrite_cp: bool = True):
         super().__init__()
         self.policy = policy
+        self.rewrite_cp = rewrite_cp
 
     def run(self, dag):
-        res = compress(dag_to_circuit(dag), self.policy)
+        res = compress(dag_to_circuit(dag), self.policy, self.rewrite_cp)
         self.property_set["address_table"] = res.table
         self.property_set["measurement_flips"] = res.measurements
         self.property_set["absorbed_gates"] = res.removed
