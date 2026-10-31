@@ -66,7 +66,12 @@ The table lookup is the plain compute/uncompute unary iteration (2(N−2) Toffol
 al.'s N−1 figure is included in the CSV. The select-swap row is a closed form written from
 memory and not yet checked against Low–Kliuchnikov–Schaeffer. The lookup's own X gates are
 mostly not absorbable: in the table lookup every absorbed X is flushed again before the next
-Toffoli; in the bucket brigade about 28 % survive. The pass does not make lookups cheaper.
+Toffoli; in the bucket brigade about 28 % survive. Exactly (`proofs/predictions.md` §2a,
+checked on every built row): flushed X = 4(N−1−k) + 4d(N−1) + 2dw with w the set bits of the
+table, so gates removed = 6N + 2k − 2 − w at d = 1 and the flushed fraction tends to 2/3; the
+only X pairs that cancel are a descent's trailing X against the ascent's leading X on the same
+router. No CSWAP is ever removed, so Toffoli and T counts are unchanged. The pass does not make
+lookups cheaper.
 
 ## Step 5 — shared oracle (`shared_oracle.*`)
 
@@ -76,7 +81,9 @@ count) but depth × 2.81, so qubit·depth × 0.94; table lookup 33 % fewer qubit
 qubit·depth × 1.99. In closed form (`proofs/predictions.md`): with a address qubits per
 instance, Q oracle qubits, lookup depth L and diffusion depth D, sharing saves a fraction
 (1 − 1/k)·Q/(a + Q) of the qubits, so the whitepaper's 66 % is the k = 3 ceiling Q ≫ a, and
-qubit·depth improves only while k < Q·D/(a·L). Sharing pays only when the oracle dominates the
+qubit·depth improves only while k < Q·D/(a·L). The whitepaper's own table (61/64/65/66 % for
+its four cases) omits the address registers on the duplicated side; with them included the
+values are 63.2/64.9/65.8/66.2 % (`proofs/predictions.md` §5). Sharing pays only when the oracle dominates the
 qubit count, and it always costs depth because the memory answers one query at a time.
 
 ## Step 6 — noise (`noise.*`)
