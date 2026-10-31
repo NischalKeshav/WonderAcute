@@ -18,7 +18,8 @@ from __future__ import annotations
 
 from qiskit.circuit import QuantumCircuit
 from qiskit.converters import circuit_to_dag
-from qiskit_aer.noise import NoiseModel, amplitude_damping_error, phase_damping_error
+from qiskit_aer.noise import (NoiseModel, amplitude_damping_error, depolarizing_error,
+                              phase_damping_error)
 
 ONE_Q = ["h", "s", "sdg", "sx", "sxdg", "x", "y", "z", "t", "tdg", "rz", "p", "u", "u3", "rx", "ry"]
 TWO_Q = ["cx", "cz", "cy", "swap", "cp", "rzz", "ecr"]
@@ -58,19 +59,28 @@ def with_idle(qc: QuantumCircuit, ops_per_tick: int | None) -> QuantumCircuit:
     return out
 
 
+CHANNELS = ("both", "dephasing", "damping", "depolarizing")
+
+
 def noise_model(p1: float, p2: float, p_idle: float, channel: str = "both") -> NoiseModel:
-    """``channel``: "both" (amplitude damping then dephasing), "dephasing" or "damping" only.
-    Separating them matters: a Pauli frame keeps the physical register in |0> while the
-    answer lives in classical bits, and amplitude damping cannot touch |0>."""
-    def chan(p):
+    """``channel``: "both" (amplitude damping then dephasing), "dephasing", "damping" or
+    "depolarizing". Separating them matters: dephasing and depolarizing are invariant under
+    Pauli conjugation, so a Pauli frame cannot change what they do; amplitude damping is not,
+    and a frame that keeps the physical register near |0> is protected from it. Depolarizing
+    is the Pauli-symmetric control (a two-qubit depolarizing channel on two-qubit gates)."""
+    def chan(p, n=1):
         if channel == "dephasing":
-            return phase_damping_error(p)
-        if channel == "damping":
-            return amplitude_damping_error(p)
-        return amplitude_damping_error(p).compose(phase_damping_error(p))
+            e = phase_damping_error(p)
+        elif channel == "damping":
+            e = amplitude_damping_error(p)
+        elif channel == "depolarizing":
+            return depolarizing_error(p, n)
+        else:
+            e = amplitude_damping_error(p).compose(phase_damping_error(p))
+        return e if n == 1 else e.tensor(e)
 
     nm = NoiseModel(basis_gates=ONE_Q + TWO_Q + ["id"])
     nm.add_all_qubit_quantum_error(chan(p1), ONE_Q)
-    nm.add_all_qubit_quantum_error(chan(p2).tensor(chan(p2)), TWO_Q)
+    nm.add_all_qubit_quantum_error(chan(p2, 2), TWO_Q)
     nm.add_all_qubit_quantum_error(chan(p_idle), ["id"])
     return nm

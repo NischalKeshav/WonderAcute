@@ -123,7 +123,14 @@ every idle rate (n=4: 0.664 vs 0.664 at p_idle = 0, 0.341 vs 0.337 at 8e-3; n=5:
 tick-effect gain (BV-10: 0.963 → 0.972 at 0, 0.906 → 0.929 at 8e-3; BV-6: 0.974 → 0.978 at
 8e-3). So the success-probability gains under the combined model are the amplitude-damping
 asymmetry above, not the removed gates: the pass removes one-qubit gates at p1 = 1e-3, which is
-negligible next to the untouched two-qubit gates at p2 = 1e-2. The defensible claims are
+negligible next to the untouched two-qubit gates at p2 = 1e-2. The reason is structural:
+dephasing and depolarizing channels are invariant under Pauli conjugation, so moving a Pauli
+into the frame cannot change what they do to the state; amplitude damping is not, and a frame
+that keeps the physical register near |0…0⟩ (BV's controls, Grover's register during the
+MCZ decomposition once the diffusion X layer is absorbed) is protected from it.
+`noise_idle_sweep_damping.*` (damping only, the mirror image) and
+`noise_idle_sweep_depolarizing.*` (the Pauli-symmetric control) test this directly. The
+defensible claims are
 (i) frame tracking shortens the circuit by a tick wherever an absorbed gate was alone in its
 layer, and (ii) under T1-dominated noise it protects the answer by keeping the physical
 register in |0⟩; it does not make Grover more robust to dephasing.

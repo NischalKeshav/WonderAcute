@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from qarch import circuits  # noqa: E402
 from qarch.metrics import baseline  # noqa: E402
-from qarch.noise import ONE_Q, TWO_Q, noise_model, with_idle  # noqa: E402
+from qarch.noise import CHANNELS, ONE_Q, TWO_Q, noise_model, with_idle  # noqa: E402
 from qarch.passes import compress  # noqa: E402
 from qarch.verify import counts_with_flips  # noqa: E402
 
@@ -47,7 +47,7 @@ def main():
     ap.add_argument("--p1", type=float, default=1e-3)
     ap.add_argument("--p2", type=float, default=1e-2)
     ap.add_argument("--p-idle", type=float, default=2e-3)
-    ap.add_argument("--channel", choices=["both", "dephasing", "damping"], default="both")
+    ap.add_argument("--channel", choices=list(CHANNELS), default="both")
     ap.add_argument("--p-idle-sweep", action="store_true",
                     help="sweep the idle rate at unbounded ops per tick instead of sweeping ticks")
     args = ap.parse_args()
