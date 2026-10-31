@@ -44,6 +44,10 @@ Readings.
   qubit, because every CP in the synthesized MCZ gains a P) but *raises* the virtual-Z saving
   (`gates_vz`, diagonal one-qubit gates free: 7 and +26 per qubit). It is the right choice on
   virtual-Z hardware and the wrong one when every gate costs; QFT and Shor are unaffected.
+- Exact Grover savings (derived in `proofs/predictions.md`, checked against the CSV): with z the
+  number of zero bits in the marked item, one iteration saves exactly n + z gates for the
+  native-MCZ variant and 2n + 2z for the Clifford+T variant vs raw. z depends on the seed, which
+  is why those fits have R² < 1 while the per-qubit slope is exact.
 - Grover with a native multi-controlled Z is reported for n ≤ 10 only and is noisy on top of
   O3 (O3 resynthesizes the MCZ differently at each n). Its qubit counts are not comparable to
   the Clifford+T variant, which uses n − 3 clean ancillas.
@@ -69,8 +73,11 @@ Toffoli; in the bucket brigade about 28 % survive. The pass does not make lookup
 k Grover instances, one queued oracle vs k copies, N = 1024, k = 3:
 bucket brigade 12,318 → 4,126 qubits (66.5 % fewer; the whitepaper's 66 % holds for qubit
 count) but depth × 2.81, so qubit·depth × 0.94; table lookup 33 % fewer qubits, depth × 2.99,
-qubit·depth × 1.99. Sharing pays only when the oracle dominates the qubit count, and it always
-costs depth because the memory answers one query at a time.
+qubit·depth × 1.99. In closed form (`proofs/predictions.md`): with a address qubits per
+instance, Q oracle qubits, lookup depth L and diffusion depth D, sharing saves a fraction
+(1 − 1/k)·Q/(a + Q) of the qubits, so the whitepaper's 66 % is the k = 3 ceiling Q ≫ a, and
+qubit·depth improves only while k < Q·D/(a·L). Sharing pays only when the oracle dominates the
+qubit count, and it always costs depth because the memory answers one query at a time.
 
 ## Step 6 — noise (`noise.*`)
 
@@ -107,7 +114,21 @@ classical frame and the physical control qubits wait for readout in |0⟩, which
 damping cannot touch, while in the O3 circuit the controls holding a 1 sit in |1⟩ and decay.
 This is a real property of frame tracking under biased noise, but it is specific to amplitude
 damping and to a model without readout error; `noise.py --channel dephasing|damping` separates
-the two. Packing more operations into a tick always helps in
+the two.
+
+**Dephasing-only sweep (`noise_idle_sweep_dephasing.*`, O3 vs pass + O3).** With amplitude
+damping switched off the compressed and baseline circuits are equal within CI for Grover at
+every idle rate (n=4: 0.664 vs 0.664 at p_idle = 0, 0.341 vs 0.337 at 8e-3; n=5: 0.458 vs
+0.460 and 0.068 vs 0.070; n=3: 0.860 vs 0.862 and 0.802 vs 0.803), and only BV keeps a small
+tick-effect gain (BV-10: 0.963 → 0.972 at 0, 0.906 → 0.929 at 8e-3; BV-6: 0.974 → 0.978 at
+8e-3). So the success-probability gains under the combined model are the amplitude-damping
+asymmetry above, not the removed gates: the pass removes one-qubit gates at p1 = 1e-3, which is
+negligible next to the untouched two-qubit gates at p2 = 1e-2. The defensible claims are
+(i) frame tracking shortens the circuit by a tick wherever an absorbed gate was alone in its
+layer, and (ii) under T1-dominated noise it protects the answer by keeping the physical
+register in |0⟩; it does not make Grover more robust to dephasing.
+
+Packing more operations into a tick always helps in
 this model because it has no crosstalk term; the "best number of operations per tick" asked
 for in the plan needs a crosstalk penalty, which is future work.
 
