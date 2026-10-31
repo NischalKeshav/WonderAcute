@@ -37,7 +37,10 @@ Readings.
 - On the line coupling map, `o3+pass` deletes routing SWAPs by relabeling and therefore no
   longer obeys the hardware graph: it is the "free relabeling" assumption of the architecture,
   not a hardware saving. `pass+o3` is the routed, hardware-fair column and tracks the
-  all-to-all numbers.
+  all-to-all numbers on average, but routing is heuristic: on the line map `pass+o3` is worse
+  than `o3` in CX-equivalents on 24 of 48 `random_layered` rows (worst +402), never on the
+  structured families (`proofs/predictions.md` §6). Removing SWAPs before routing changes the
+  router's starting point, and a different layout can cost more than the removed SWAPs saved.
 - CP/RZZ rewrite (`rewrite_cp`, **off by default**; `--cp-rewrite` turns it on): a pending X on a controlled-phase gate becomes
   CP(−θ) plus a P(θ) on the other qubit instead of a flushed X. On O3 output this *lowers* the
   total-gate saving (Clifford+T Grover: 2 → 1 per qubit; native-MCZ Grover: +3 → −27 per
@@ -136,7 +139,11 @@ into the frame cannot change what they do to the state; amplitude damping is not
 that keeps the physical register near |0…0⟩ (BV's controls, Grover's register during the
 MCZ decomposition once the diffusion X layer is absorbed) is protected from it.
 `noise_idle_sweep_damping.*` (damping only, the mirror image) and
-`noise_idle_sweep_depolarizing.*` (the Pauli-symmetric control) test this directly. The
+`noise_idle_sweep_depolarizing.*` (the Pauli-symmetric control) test this directly. This is
+Lemma 4 of `proofs/predictions.md` §4: dephasing and depolarizing commute with every Pauli
+flag, amplitude damping commutes with Z only, and an X flag swaps which logical state is the
+damping fixed point. The same lemma says the effect is circuit-dependent and can go against
+the pass: a logically |0⟩ qubit carrying an X flag sits physically in |1⟩ and decays. The
 defensible claims are
 (i) frame tracking shortens the circuit by a tick wherever an absorbed gate was alone in its
 layer, and (ii) under T1-dominated noise it protects the answer by keeping the physical
