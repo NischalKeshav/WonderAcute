@@ -142,7 +142,9 @@ MCZ decomposition once the diffusion X layer is absorbed) is protected from it.
 same rates) confirms it: Grover equal within CI at every idle rate (n=4: 0.449 vs 0.449 at 0,
 0.259 vs 0.257 at 2e-3, 0.092 vs 0.090 at 8e-3; n=5: 0.208 vs 0.211, 0.055 vs 0.055, 0.030 vs
 0.030) and BV-10 showing only the tick effect (0.939 → 0.951 at 0, 0.668 → 0.710 at 8e-3).
-`noise_idle_sweep_damping.*` (damping only) is the mirror image. This is
+`noise_idle_sweep_damping.*` (damping only) is the mirror image: Grover-4 0.400 → 0.472 at 0,
+0.224 → 0.326 at 2e-3, 0.058 → 0.141 at 8e-3; Grover-5 0.169 → 0.238, 0.032 → 0.090,
+0.005 → 0.026; BV-10 0.956 → 0.972, 0.898 → 0.946, 0.745 → 0.915. This is
 Lemma 4 of `proofs/predictions.md` §4: dephasing and depolarizing commute with every Pauli
 flag, amplitude damping commutes with Z only, and an X flag swaps which logical state is the
 damping fixed point. The same lemma says the effect is circuit-dependent and can go against
