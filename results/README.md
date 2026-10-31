@@ -138,8 +138,11 @@ dephasing and depolarizing channels are invariant under Pauli conjugation, so mo
 into the frame cannot change what they do to the state; amplitude damping is not, and a frame
 that keeps the physical register near |0…0⟩ (BV's controls, Grover's register during the
 MCZ decomposition once the diffusion X layer is absorbed) is protected from it.
-`noise_idle_sweep_damping.*` (damping only, the mirror image) and
-`noise_idle_sweep_depolarizing.*` (the Pauli-symmetric control) test this directly. This is
+`noise_idle_sweep_depolarizing.*` (the Pauli-symmetric control, 1q/2q depolarizing at the
+same rates) confirms it: Grover equal within CI at every idle rate (n=4: 0.449 vs 0.449 at 0,
+0.259 vs 0.257 at 2e-3, 0.092 vs 0.090 at 8e-3; n=5: 0.208 vs 0.211, 0.055 vs 0.055, 0.030 vs
+0.030) and BV-10 showing only the tick effect (0.939 → 0.951 at 0, 0.668 → 0.710 at 8e-3).
+`noise_idle_sweep_damping.*` (damping only) is the mirror image. This is
 Lemma 4 of `proofs/predictions.md` §4: dephasing and depolarizing commute with every Pauli
 flag, amplitude damping commutes with Z only, and an X flag swaps which logical state is the
 damping fixed point. The same lemma says the effect is circuit-dependent and can go against
