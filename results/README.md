@@ -161,4 +161,23 @@ for in the plan needs a crosstalk penalty, which is future work.
 `shared_oracle_noise.*` repeats the step-5 comparison under this noise model at N = 8 with the
 table-lookup oracle (the bucket brigade's 35 qubits are out of statevector range), k = 1…3
 instances, sweeping the idle rate: in the shared design the queued instances take idle error
-while they wait. See the CSV for the numbers.
+while they wait. Per-instance success probability (1000 shots × 5 seeds; k = 1 is the same
+circuit in both designs, 0.230 / 0.192 / 0.174 / 0.148 at p_idle = 0 / 1e-3 / 2e-3 / 4e-3):
+
+| k | design | qubits | ticks | p_idle = 0 | 1e-3 | 2e-3 | 4e-3 |
+|---|---|---|---|---|---|---|---|
+| 2 | duplicated | 12 | 291 | 0.251 ± 0.012 | 0.210 | 0.194 | 0.169 |
+| 2 | shared | 9 | 530 | 0.233 ± 0.012 | 0.169 | 0.128 | 0.111 |
+| 3 | duplicated | 18 | 291 | 0.243 ± 0.012 | 0.198 | 0.171 | 0.156 |
+| 3 | shared | 12 | 786 | 0.218 ± 0.011 | 0.147 | 0.127 | 0.109 |
+
+Sharing saves 25–33 % of the qubits here (the table-lookup oracle is small; the bucket brigade
+would save more but is out of simulation range) and costs the queued instances about a third
+of their success probability at p_idle = 2e-3, more as the idle rate rises. Even at p_idle = 0
+the shared design is slightly worse, because the shared output and ancilla qubits absorb gate
+noise from every instance's lookup. So the answer to the plan's question "does a shared oracle
+still save qubits once lookup cost is counted" is: yes in qubit count, at a depth and
+success-probability price that grows linearly with k; under noise the saving is not free.
+The simulator method was chosen per design (MPS for duplicated, statevector for shared) and
+cross-checked equal at k = 1. Absolute success is low because the exact Clifford+T lookup and
+Toffoli diffusion put many two-qubit gates at p2 = 1e-2 into every iteration.
