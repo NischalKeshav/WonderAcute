@@ -1,0 +1,25 @@
+k=1 duplicated qubits=6   ticks=291  p_idle=0.0     p=0.230 ±0.012
+k=1 duplicated qubits=6   ticks=291  p_idle=0.001   p=0.192 ±0.011
+k=1 duplicated qubits=6   ticks=291  p_idle=0.002   p=0.174 ±0.011
+k=1 duplicated qubits=6   ticks=291  p_idle=0.004   p=0.148 ±0.010
+k=1     shared qubits=6   ticks=291  p_idle=0.0     p=0.230 ±0.012
+k=1     shared qubits=6   ticks=291  p_idle=0.001   p=0.192 ±0.011
+k=1     shared qubits=6   ticks=291  p_idle=0.002   p=0.174 ±0.011
+k=1     shared qubits=6   ticks=291  p_idle=0.004   p=0.148 ±0.010
+k=2 duplicated qubits=12  ticks=291  p_idle=0.0     p=0.251 ±0.012
+k=2 duplicated qubits=12  ticks=291  p_idle=0.001   p=0.210 ±0.011
+k=2 duplicated qubits=12  ticks=291  p_idle=0.002   p=0.194 ±0.011
+k=2 duplicated qubits=12  ticks=291  p_idle=0.004   p=0.169 ±0.010
+k=2     shared qubits=9   ticks=530  p_idle=0.0     p=0.233 ±0.012
+k=2     shared qubits=9   ticks=530  p_idle=0.001   p=0.169 ±0.010
+k=2     shared qubits=9   ticks=530  p_idle=0.002   p=0.128 ±0.009
+k=2     shared qubits=9   ticks=530  p_idle=0.004   p=0.111 ±0.009
+k=3 duplicated qubits=18  ticks=291  p_idle=0.0     p=0.243 ±0.012
+k=3 duplicated qubits=18  ticks=291  p_idle=0.001   p=0.198 ±0.011
+k=3 duplicated qubits=18  ticks=291  p_idle=0.002   p=0.171 ±0.010
+k=3 duplicated qubits=18  ticks=291  p_idle=0.004   p=0.156 ±0.010
+k=3     shared qubits=12  ticks=786  p_idle=0.0     p=0.218 ±0.011
+k=3     shared qubits=12  ticks=786  p_idle=0.001   p=0.147 ±0.010
+k=3     shared qubits=12  ticks=786  p_idle=0.002   p=0.127 ±0.009
+k=3     shared qubits=12  ticks=786  p_idle=0.004   p=0.109 ±0.009
+wrote /home/nischalkeshav/CC/sts/.claude/worktrees/code-compiler/results/shared_oracle_noise.csv and .png

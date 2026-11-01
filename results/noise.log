@@ -1,0 +1,141 @@
+  grover_3   original ops/tick=   1 p_idle=0.002  ticks=99    p=0.546 ±0.013
+  grover_3   original ops/tick=   2 p_idle=0.002  ticks=70    p=0.599 ±0.011
+  grover_3   original ops/tick=   3 p_idle=0.002  ticks=57    p=0.621 ±0.011
+  grover_3   original ops/tick=   4 p_idle=0.002  ticks=57    p=0.621 ±0.011
+  grover_3   original ops/tick=   6 p_idle=0.002  ticks=57    p=0.621 ±0.011
+  grover_3   original ops/tick=   8 p_idle=0.002  ticks=57    p=0.621 ±0.011
+  grover_3   original ops/tick=None p_idle=0.002  ticks=57    p=0.621 ±0.011
+  grover_3 compressed ops/tick=   1 p_idle=0.002  ticks=83    p=0.624 ±0.012
+  grover_3 compressed ops/tick=   2 p_idle=0.002  ticks=62    p=0.664 ±0.011
+  grover_3 compressed ops/tick=   3 p_idle=0.002  ticks=53    p=0.680 ±0.012
+  grover_3 compressed ops/tick=   4 p_idle=0.002  ticks=53    p=0.680 ±0.012
+  grover_3 compressed ops/tick=   6 p_idle=0.002  ticks=53    p=0.680 ±0.012
+  grover_3 compressed ops/tick=   8 p_idle=0.002  ticks=53    p=0.680 ±0.012
+  grover_3 compressed ops/tick=None p_idle=0.002  ticks=53    p=0.680 ±0.012
+  grover_3         o3 ops/tick=   1 p_idle=0.002  ticks=77    p=0.601 ±0.011
+  grover_3         o3 ops/tick=   2 p_idle=0.002  ticks=55    p=0.651 ±0.011
+  grover_3         o3 ops/tick=   3 p_idle=0.002  ticks=49    p=0.661 ±0.011
+  grover_3         o3 ops/tick=   4 p_idle=0.002  ticks=49    p=0.661 ±0.011
+  grover_3         o3 ops/tick=   6 p_idle=0.002  ticks=49    p=0.661 ±0.011
+  grover_3         o3 ops/tick=   8 p_idle=0.002  ticks=49    p=0.661 ±0.011
+  grover_3         o3 ops/tick=None p_idle=0.002  ticks=49    p=0.661 ±0.011
+  grover_3    pass+o3 ops/tick=   1 p_idle=0.002  ticks=70    p=0.656 ±0.011
+  grover_3    pass+o3 ops/tick=   2 p_idle=0.002  ticks=50    p=0.699 ±0.013
+  grover_3    pass+o3 ops/tick=   3 p_idle=0.002  ticks=47    p=0.706 ±0.012
+  grover_3    pass+o3 ops/tick=   4 p_idle=0.002  ticks=47    p=0.706 ±0.012
+  grover_3    pass+o3 ops/tick=   6 p_idle=0.002  ticks=47    p=0.706 ±0.012
+  grover_3    pass+o3 ops/tick=   8 p_idle=0.002  ticks=47    p=0.706 ±0.012
+  grover_3    pass+o3 ops/tick=None p_idle=0.002  ticks=47    p=0.706 ±0.012
+  grover_4   original ops/tick=   1 p_idle=0.002  ticks=340   p=0.080 ±0.005
+  grover_4   original ops/tick=   2 p_idle=0.002  ticks=231   p=0.114 ±0.006
+  grover_4   original ops/tick=   3 p_idle=0.002  ticks=194   p=0.131 ±0.007
+  grover_4   original ops/tick=   4 p_idle=0.002  ticks=194   p=0.131 ±0.007
+  grover_4   original ops/tick=   6 p_idle=0.002  ticks=193   p=0.131 ±0.007
+  grover_4   original ops/tick=   8 p_idle=0.002  ticks=193   p=0.131 ±0.007
+  grover_4   original ops/tick=None p_idle=0.002  ticks=193   p=0.131 ±0.007
+  grover_4 compressed ops/tick=   1 p_idle=0.002  ticks=310   p=0.136 ±0.007
+  grover_4 compressed ops/tick=   2 p_idle=0.002  ticks=213   p=0.180 ±0.008
+  grover_4 compressed ops/tick=   3 p_idle=0.002  ticks=188   p=0.196 ±0.009
+  grover_4 compressed ops/tick=   4 p_idle=0.002  ticks=188   p=0.196 ±0.009
+  grover_4 compressed ops/tick=   6 p_idle=0.002  ticks=187   p=0.197 ±0.009
+  grover_4 compressed ops/tick=   8 p_idle=0.002  ticks=187   p=0.197 ±0.009
+  grover_4 compressed ops/tick=None p_idle=0.002  ticks=187   p=0.197 ±0.009
+  grover_4         o3 ops/tick=   1 p_idle=0.002  ticks=288   p=0.106 ±0.006
+  grover_4         o3 ops/tick=   2 p_idle=0.002  ticks=208   p=0.139 ±0.007
+  grover_4         o3 ops/tick=   3 p_idle=0.002  ticks=189   p=0.153 ±0.008
+  grover_4         o3 ops/tick=   4 p_idle=0.002  ticks=189   p=0.153 ±0.008
+  grover_4         o3 ops/tick=   6 p_idle=0.002  ticks=188   p=0.153 ±0.008
+  grover_4         o3 ops/tick=   8 p_idle=0.002  ticks=188   p=0.153 ±0.008
+  grover_4         o3 ops/tick=None p_idle=0.002  ticks=188   p=0.153 ±0.008
+  grover_4    pass+o3 ops/tick=   1 p_idle=0.002  ticks=283   p=0.158 ±0.008
+  grover_4    pass+o3 ops/tick=   2 p_idle=0.002  ticks=201   p=0.207 ±0.009
+  grover_4    pass+o3 ops/tick=   3 p_idle=0.002  ticks=191   p=0.215 ±0.008
+  grover_4    pass+o3 ops/tick=   4 p_idle=0.002  ticks=191   p=0.215 ±0.008
+  grover_4    pass+o3 ops/tick=   6 p_idle=0.002  ticks=190   p=0.215 ±0.008
+  grover_4    pass+o3 ops/tick=   8 p_idle=0.002  ticks=190   p=0.215 ±0.008
+  grover_4    pass+o3 ops/tick=None p_idle=0.002  ticks=190   p=0.215 ±0.008
+  grover_5   original ops/tick=   1 p_idle=0.002  ticks=717   p=0.014 ±0.002
+  grover_5   original ops/tick=   2 p_idle=0.002  ticks=484   p=0.018 ±0.003
+  grover_5   original ops/tick=   3 p_idle=0.002  ticks=420   p=0.021 ±0.003
+  grover_5   original ops/tick=   4 p_idle=0.002  ticks=418   p=0.021 ±0.003
+  grover_5   original ops/tick=   6 p_idle=0.002  ticks=418   p=0.021 ±0.003
+  grover_5   original ops/tick=   8 p_idle=0.002  ticks=417   p=0.021 ±0.004
+  grover_5   original ops/tick=None p_idle=0.002  ticks=417   p=0.021 ±0.004
+  grover_5 compressed ops/tick=   1 p_idle=0.002  ticks=661   p=0.033 ±0.004
+  grover_5 compressed ops/tick=   2 p_idle=0.002  ticks=460   p=0.043 ±0.004
+  grover_5 compressed ops/tick=   3 p_idle=0.002  ticks=411   p=0.047 ±0.004
+  grover_5 compressed ops/tick=   4 p_idle=0.002  ticks=410   p=0.047 ±0.005
+  grover_5 compressed ops/tick=   6 p_idle=0.002  ticks=410   p=0.047 ±0.004
+  grover_5 compressed ops/tick=   8 p_idle=0.002  ticks=409   p=0.047 ±0.004
+  grover_5 compressed ops/tick=None p_idle=0.002  ticks=409   p=0.047 ±0.004
+  grover_5         o3 ops/tick=   1 p_idle=0.002  ticks=629   p=0.016 ±0.003
+  grover_5         o3 ops/tick=   2 p_idle=0.002  ticks=461   p=0.020 ±0.003
+  grover_5         o3 ops/tick=   3 p_idle=0.002  ticks=427   p=0.024 ±0.003
+  grover_5         o3 ops/tick=   4 p_idle=0.002  ticks=426   p=0.024 ±0.003
+  grover_5         o3 ops/tick=   6 p_idle=0.002  ticks=426   p=0.024 ±0.003
+  grover_5         o3 ops/tick=   8 p_idle=0.002  ticks=425   p=0.024 ±0.003
+  grover_5         o3 ops/tick=None p_idle=0.002  ticks=425   p=0.024 ±0.003
+  grover_5    pass+o3 ops/tick=   1 p_idle=0.002  ticks=594   p=0.035 ±0.004
+  grover_5    pass+o3 ops/tick=   2 p_idle=0.002  ticks=429   p=0.048 ±0.004
+  grover_5    pass+o3 ops/tick=   3 p_idle=0.002  ticks=415   p=0.049 ±0.004
+  grover_5    pass+o3 ops/tick=   4 p_idle=0.002  ticks=414   p=0.049 ±0.005
+  grover_5    pass+o3 ops/tick=   6 p_idle=0.002  ticks=414   p=0.049 ±0.004
+  grover_5    pass+o3 ops/tick=   8 p_idle=0.002  ticks=413   p=0.049 ±0.005
+  grover_5    pass+o3 ops/tick=None p_idle=0.002  ticks=413   p=0.049 ±0.005
+      bv_6   original ops/tick=   1 p_idle=0.002  ticks=17    p=0.909 ±0.006
+      bv_6   original ops/tick=   2 p_idle=0.002  ticks=10    p=0.937 ±0.005
+      bv_6   original ops/tick=   3 p_idle=0.002  ticks=9     p=0.940 ±0.005
+      bv_6   original ops/tick=   4 p_idle=0.002  ticks=7     p=0.950 ±0.004
+      bv_6   original ops/tick=   6 p_idle=0.002  ticks=7     p=0.948 ±0.004
+      bv_6   original ops/tick=   8 p_idle=0.002  ticks=6     p=0.955 ±0.004
+      bv_6   original ops/tick=None p_idle=0.002  ticks=6     p=0.955 ±0.004
+      bv_6 compressed ops/tick=   1 p_idle=0.002  ticks=16    p=0.924 ±0.006
+      bv_6 compressed ops/tick=   2 p_idle=0.002  ticks=9     p=0.948 ±0.006
+      bv_6 compressed ops/tick=   3 p_idle=0.002  ticks=8     p=0.952 ±0.006
+      bv_6 compressed ops/tick=   4 p_idle=0.002  ticks=6     p=0.962 ±0.005
+      bv_6 compressed ops/tick=   6 p_idle=0.002  ticks=6     p=0.960 ±0.005
+      bv_6 compressed ops/tick=   8 p_idle=0.002  ticks=5     p=0.966 ±0.004
+      bv_6 compressed ops/tick=None p_idle=0.002  ticks=5     p=0.966 ±0.004
+      bv_6         o3 ops/tick=   1 p_idle=0.002  ticks=11    p=0.940 ±0.005
+      bv_6         o3 ops/tick=   2 p_idle=0.002  ticks=7     p=0.954 ±0.004
+      bv_6         o3 ops/tick=   3 p_idle=0.002  ticks=7     p=0.953 ±0.004
+      bv_6         o3 ops/tick=   4 p_idle=0.002  ticks=6     p=0.957 ±0.004
+      bv_6         o3 ops/tick=   6 p_idle=0.002  ticks=6     p=0.957 ±0.004
+      bv_6         o3 ops/tick=   8 p_idle=0.002  ticks=6     p=0.957 ±0.004
+      bv_6         o3 ops/tick=None p_idle=0.002  ticks=6     p=0.957 ±0.004
+      bv_6    pass+o3 ops/tick=   1 p_idle=0.002  ticks=10    p=0.956 ±0.005
+      bv_6    pass+o3 ops/tick=   2 p_idle=0.002  ticks=6     p=0.965 ±0.004
+      bv_6    pass+o3 ops/tick=   3 p_idle=0.002  ticks=6     p=0.964 ±0.005
+      bv_6    pass+o3 ops/tick=   4 p_idle=0.002  ticks=5     p=0.968 ±0.004
+      bv_6    pass+o3 ops/tick=   6 p_idle=0.002  ticks=5     p=0.968 ±0.004
+      bv_6    pass+o3 ops/tick=   8 p_idle=0.002  ticks=5     p=0.968 ±0.004
+      bv_6    pass+o3 ops/tick=None p_idle=0.002  ticks=5     p=0.968 ±0.004
+     bv_10   original ops/tick=   1 p_idle=0.002  ticks=29    p=0.759 ±0.008
+     bv_10   original ops/tick=   2 p_idle=0.002  ticks=16    p=0.840 ±0.007
+     bv_10   original ops/tick=   3 p_idle=0.002  ticks=14    p=0.844 ±0.007
+     bv_10   original ops/tick=   4 p_idle=0.002  ticks=12    p=0.834 ±0.007
+     bv_10   original ops/tick=   6 p_idle=0.002  ticks=11    p=0.849 ±0.007
+     bv_10   original ops/tick=   8 p_idle=0.002  ticks=11    p=0.848 ±0.007
+     bv_10   original ops/tick=None p_idle=0.002  ticks=10    p=0.853 ±0.007
+     bv_10 compressed ops/tick=   1 p_idle=0.002  ticks=28    p=0.828 ±0.007
+     bv_10 compressed ops/tick=   2 p_idle=0.002  ticks=15    p=0.888 ±0.006
+     bv_10 compressed ops/tick=   3 p_idle=0.002  ticks=13    p=0.883 ±0.006
+     bv_10 compressed ops/tick=   4 p_idle=0.002  ticks=11    p=0.906 ±0.006
+     bv_10 compressed ops/tick=   6 p_idle=0.002  ticks=10    p=0.894 ±0.006
+     bv_10 compressed ops/tick=   8 p_idle=0.002  ticks=10    p=0.891 ±0.006
+     bv_10 compressed ops/tick=None p_idle=0.002  ticks=9     p=0.916 ±0.005
+     bv_10         o3 ops/tick=   1 p_idle=0.002  ticks=23    p=0.778 ±0.008
+     bv_10         o3 ops/tick=   2 p_idle=0.002  ticks=13    p=0.837 ±0.007
+     bv_10         o3 ops/tick=   3 p_idle=0.002  ticks=12    p=0.836 ±0.007
+     bv_10         o3 ops/tick=   4 p_idle=0.002  ticks=11    p=0.845 ±0.007
+     bv_10         o3 ops/tick=   6 p_idle=0.002  ticks=11    p=0.846 ±0.007
+     bv_10         o3 ops/tick=   8 p_idle=0.002  ticks=10    p=0.852 ±0.007
+     bv_10         o3 ops/tick=None p_idle=0.002  ticks=10    p=0.852 ±0.007
+     bv_10    pass+o3 ops/tick=   1 p_idle=0.002  ticks=22    p=0.870 ±0.007
+     bv_10    pass+o3 ops/tick=   2 p_idle=0.002  ticks=12    p=0.903 ±0.006
+     bv_10    pass+o3 ops/tick=   3 p_idle=0.002  ticks=11    p=0.908 ±0.006
+     bv_10    pass+o3 ops/tick=   4 p_idle=0.002  ticks=10    p=0.898 ±0.006
+     bv_10    pass+o3 ops/tick=   6 p_idle=0.002  ticks=10    p=0.897 ±0.006
+     bv_10    pass+o3 ops/tick=   8 p_idle=0.002  ticks=9     p=0.915 ±0.005
+     bv_10    pass+o3 ops/tick=None p_idle=0.002  ticks=9     p=0.915 ±0.005
+wrote /home/nischalkeshav/CC/sts/.claude/worktrees/code-compiler/results/noise.csv and .png

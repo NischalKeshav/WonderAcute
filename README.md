@@ -10,4 +10,18 @@ Working folder for the ISEF project by Nischal Keshav.
 | `whitepaper.html` | Whitepaper on the original architecture, with diagrams and interactive charts. Opens in any browser. |
 | `source/` | The original working paper, "Modern Architecture for Quantum Computers" (PDF) |
 
-Next steps are steps 1 and 2 of the research plan: the formal flag rules and the Qiskit compiler pass.
+| `proofs/` | Formal model and propagation tables (step 1) |
+| `src/qarch/` | Address-table compiler pass, circuit generators, QRAM circuits, noise model (steps 2–6) |
+| `benchmarks/` | Scripts that produce `results/` (gate savings, oracle cost, shared oracle, noise) |
+| `results/` | CSV/PNG outputs with a README summarising the findings |
+
+## Running the code
+
+```
+uv sync                                        # Python 3.12 venv with Qiskit, Aer, Stim
+uv run pytest                                  # rule tests, equivalence checks, QRAM checks
+uv run python benchmarks/gate_savings.py --quick
+uv run python benchmarks/oracle_cost.py
+uv run python benchmarks/shared_oracle.py
+uv run python benchmarks/noise.py --quick
+```
