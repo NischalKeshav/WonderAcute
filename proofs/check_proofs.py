@@ -118,6 +118,31 @@ def check_tables(data):
             n_rows += 1
     print(f"[ok] propagation tables: {len(data['gates'])} gates, {n_rows} rows match matrices")
 
+    # The bit-form rules of formal-model.md section 5 must agree with every signed row.
+    bits = {"I": (0, 0), "X": (1, 0), "Z": (0, 1), "Y": (1, 1)}
+
+    def bit_rule(g, f):
+        f = [list(v) for v in f]
+        if g == "H":
+            f[0] = [f[0][1], f[0][0]]
+        elif g in ("S", "Sdg"):
+            f[0][1] ^= f[0][0]
+        elif g == "CNOT":
+            f[1][0] ^= f[0][0]
+            f[0][1] ^= f[1][1]
+        elif g == "CZ":
+            xa, xb = f[0][0], f[1][0]
+            f[0][1] ^= xb
+            f[1][1] ^= xa
+        elif g == "SWAP":
+            f = [f[1], f[0]]
+        return [tuple(v) for v in f]
+
+    for name, entry in data["gates"].items():
+        for row in entry["rows"]:
+            assert bit_rule(name, [bits[c] for c in row["in"]]) == [bits[c] for c in row["out"]], (name, row)
+    print("[ok] bit-form rules (H x<->z; S z^=x; CNOT x_t^=x_c, z_c^=z_t; CZ; SWAP) agree with every row")
+
 
 # ---------------------------------------------------------------- lemmas
 
