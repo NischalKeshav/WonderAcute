@@ -1,11 +1,11 @@
 # TODO
 
 Spec: `project.md` (byte-for-byte copy of `research-plan.md`). Only the student changes the spec; agents must not edit it.
-Maintained by the review agent. Last review: 2026-10-31. History of each step is in `research.md` §2a–2e.
+Maintained by the review agent. Last review: 2026-11-01. History of each step is in `research.md` §2a–2e.
 
 Agents:
 - **Proofs** ("project.md proofs kickoff"): Step 1, `proofs/`. Finished.
-- **Code** ("project.md setup"): `src/qarch`, `tests/`, `benchmarks/`, `results/`, on branch `worktree-code-compiler` (worktree `.claude/worktrees/code-compiler`, 16 commits, latest fad563e). Not merged into `master`.
+- **Code** ("project.md setup"): `src/qarch`, `tests/`, `benchmarks/`, `results/`, now on `master` (merged 2026-11-01; the worktree and branch no longer exist). Run `uv run pytest` and `python3 proofs/check_*.py` from the repo root.
 - **Review** ("spec compliance review"): keeps this file and `research.md`. Note: a second session named "spec compliance review (2)" appeared on 2026-10-31; only one should edit these files.
 
 ## Status
@@ -41,7 +41,7 @@ Agents:
 - [ ] **How to restate "measured savings."** Exact per-family formulas are in predictions.md §1 (Grover: n+z native, 2n+2z Clifford+T, z = zero bits of the marked item, which is why R² < 1; QFT and Shor-15: ⌊n/2⌋ SWAPs). Over Qiskit O3: linear savings for Grover (6 gates/qubit, R² 1.00) and random Clifford circuits (~0.8–1/qubit), in single-qubit gates and depth only; zero two-qubit savings; zero for GHZ, syndrome, BV; QFT's ⌊n/2⌋ SWAPs are already removed by O3. The savings survive line-coupling routing (Grover 6.49/qubit).
 - [ ] **How to restate the shared-oracle claim.** Closed forms (predictions.md §3, verified): qubits saved = (1 − 1/k)·Q/(a+Q), so 2/3 is a *ceiling* at k = 3 and the working paper's 66% is that ceiling for a bucket-brigade oracle; depth ≈ ×k; sharing wins in qubit·depth iff k < Q·D/(a·L) (bucket brigade N = 64: k < 4.4; table lookup: never). Zalka: a shared oracle only makes sense for k *independent* searches, since k parallel copies of the same search cost √(Nk) total queries. Cite Zalka and Fat-Tree QRAM.
 - [ ] **`rewrite_cp` default.** Currently off (plain gate count is the spec's metric). Rewrite-on results kept as `results/gate_savings_*_cprewrite_*` for the virtual-Z-hardware story (+25.8 gates/qubit on native-MCZ Grover). Confirm or overrule.
-- [ ] **Merge `worktree-code-compiler` into `master`** when satisfied (your call; the review agent won't merge).
+- [x] **Merged into `master`** on 2026-11-01 at the student's request (merge d8303e2, then 945adbc ignores `.claude/`). Worktree and branch removed. 264 tests and all three proof checkers pass on master.
 - [ ] **Write-up caveats to carry:** feed-forward unsupported in code; removing a SWAP assumes free relabeling, now quantified in `predictions.md` §6 (with an optimal router the pass can never hurt; with SABRE on a line, pass+O3 is never worse than O3 in CNOT-equivalents on the 216 structured rows but worse on 24/48 `random_layered` rows, worst +402 of ~11,800, and has more total gates in 1 of 264 rows); the "o3+pass on line" column is not a hardware saving; Shor-15 is a compiled, order-aware circuit (Smolin, Smith & Vargo 2013); Grover-Clifford+T uses n−3 ancillas; residual flushes before non-diagonal non-Cliffords can cost more than they save (`flushed` column); the "clear boundary" is native multi-qubit non-Clifford gates, slightly broader than the plan's "Clifford" wording.
 - [ ] **Novelty framing.** Pauli frames (Knill 2005; Riesebos 2017) and SWAP elision by relabeling are established and partly implemented in Qiskit/Stim; frame the contribution as combining and evaluating them in this architecture, as the plan's "Gap" paragraph says.
 
